@@ -1,7 +1,6 @@
 let router = require('express').Router();
 let path = require('path');
 let axios = require('axios')
-let Parallel = require('paralleljs')
 let parseString = require('xml2js').parseString
 let _ = require('lodash');
 let simulate = require('./simulation/simulate'); 
@@ -13,21 +12,6 @@ const TRADES_URL = 'http://ws.nasdaqdod.com/v1/NASDAQAnalytics.asmx/GetSummarize
 router.get("/stocks", function (req, res) {
 	res.sendFile(path.join(__dirname, "/stocks.json"))
 })
-
-// router.get("/blocking", function(req, res) {
-// 	let p = new Parallel({test: "test"})
-// 	p.spawn(function(data){
-// 		while (true) {
-
-// 		}
-// 		res.send("gdgdf")
-// 	})
-// })
-
-// router.get("/shouldreturn", function(req, res) {
-// 	res.send("SUCCESS")
-// })
-
 
 router.post("/algorithmSimulation", function (req, res) {
 	axios.get(TRADES_URL, {
@@ -46,19 +30,15 @@ router.post("/algorithmSimulation", function (req, res) {
       if (err) {
         res.json({Error: "Nasdaq api shit the bed"})
       } else {
-        let p = new Parallel(json);
-        p.spawn(function(json){
-          json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
-          json = _.map(json, function(item){
-            let val = {};
-            val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
-            val.ticker = item["Symbol"];
-            return val;
-          });
-          return simulate(req.body.code, [], json, req.body.startingCash);
-        }).then(function(result){
-          res.send(result);
+        json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
+        json = _.map(json, function(item){
+          let val = {};
+          val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
+          val.ticker = item["Symbol"];
+          return val;
         });
+        var val = simulate(req.body.code, [], json, req.body.startingCash);
+        res.send(val);
       }
     });
   })
