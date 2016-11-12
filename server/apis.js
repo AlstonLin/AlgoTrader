@@ -1,8 +1,10 @@
-var router = require('express').Router();
-var path = require('path');
+let router = require('express').Router();
+let path = require('path');
 let axios = require('axios')
 let Parallel = require('paralleljs')
-var parseString = require('xml2js').parseString
+let parseString = require('xml2js').parseString
+let _ = require('lodash');
+let simulate = require('./simulation/simulate'); 
 
 const NASDAQ_TOKEN = 'BC2B181CF93B441D8C6342120EB0C971'
 
@@ -28,40 +30,41 @@ router.get("/stocks", function (req, res) {
 
 
 router.post("/algorithmSimulation", function (req, res) {
-	var algo_data = {
-		ticket: req.body.ticket,
-		startTime: req.body.startTime,
-		endTime: req.body.endTime,
-		startingMoney: req.body.startingMoney
-	}
-
 	axios.get(TRADES_URL, {
 		params: {'_Token' : NASDAQ_TOKEN,
-          'Symbols' : req.body.ticket,
-          'StartDateTime' : req.body.startTime + " 09:30:00",
-          'EndDateTime' : req.body.endTime + " 16:00:00",
-          'MarketCenters' : '' ,
-          'TradePrecision': 'Hour',
-          'TradePeriod':'1'
-      }
+      'Symbols' : req.body.ticket,
+      'StartDateTime' : req.body.startTime + " 09:30:00",
+      'EndDateTime' : req.body.endTime + " 16:00:00",
+      'MarketCenters' : '' ,
+      'TradePrecision': 'Hour',
+      'TradePeriod':'1'
+    }
 	})
   .then(function (response) {
-    console.log(response.data);
-	parseString(response.data, function (err, result) {
-	    if (err) {
-	    	res.json({Error: "Nasdaq api shit the bed"})
-	    } else {
-	    	let p = new Parallel(result)
-	    	p.spawn(/*Alston's simplifier function*/)
-	    	res.send(result)
-	    }
-	});
+    parseString(response.data, function (err, json) {
+      console.log("JSON: " + JSON.stringify(json));
+      if (err) {
+        res.json({Error: "Nasdaq api shit the bed"})
+      } else {
+        let p = new Parallel(json);
+        p.spawn(function(json){
+          json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
+          json = _.map(json, function(item){
+            let val = {};
+            val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
+            val.ticker = item["Symbol"];
+            return val;
+          });
+          return simulate(req.body.code, [], json, req.body.startingCash);
+        }).then(function(result){
+          res.send(result);
+        });
+      }
+    });
   })
   .catch(function (error) {
     res.json(error)
   });
-
-	
 })
 
 module.exports = router

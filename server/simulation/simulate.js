@@ -11,5 +11,5 @@ module.exports = function(code, stocks, tradingData, startingCash){
   var AlgoTrader = trader;
   eval("(function(){" + code + "}())");
   // Runs through the tradingData and simulates it
-  console.log(AlgoTrader.stockUpdate(""));
+  return AlgoTrader.stockUpdate("");
 }
