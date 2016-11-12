@@ -1,0 +1,87 @@
+
+
+.row {
+	height: 8vh;
+}
+
+.my-header {
+	line-height: 0px;
+	height: 8vh;
+	background-color: rgba(0,0,0,0.5);
+	margin: 0px !important;
+	padding: 10px !important;
+	min-width: 100%;
+	border-bottom: 2px white solid;
+	font-family: "Raleway"
+
+}
+
+#circle_name {
+	color: white;
+	font-family: "Raleway";
+	font-size: -webkit-xxx-large;
+	text-align: center;
+	margin-top: 130px;
+
+}
+
+#title-of-app {
+	color: white;
+	font-size: 25px;
+	float: left;
+	text-align: center;
+	padding: 0px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+
+.headings {
+	color: white;
+	display: inline-block;
+	margin-right: 20px;
+	float: right;
+	margin-top: 15px;
+	background-color: black;
+	outline-color: none;
+	border: none;
+	padding-top: 10px;
+	font-size: 20px;
+	text-decoration: none;
+}
+
+
+}
+
+p {
+	color: white;
+	font-size: 50px;
+	padding: 10px;
+	margin: 0px;
+	stroke: 2px solid;
+
+}
+
+#circle {
+  width: 400px;
+  height: 400px;
+  -webkit-border-radius: 200px;
+  -moz-border-radius: 200px;
+  background: black;
+  margin-left: 530px;
+  border: white 2px solid;
+  margin-top: 150px;
+
+}
+
+body {
+	line-height: 0px;
+	background-image: url("https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/shutterstock_abstract_3.jpg") !important;
+	background-size: cover;
+}
+
+
+
+
+
+
