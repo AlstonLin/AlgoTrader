@@ -1,8 +1,9 @@
 class Stock {
-  constructor(trader, ticker, name){
+  constructor(trader, ticker, name, industry){
     this.quantityOwned = 0;
     this.trader = trader;
     this.ticker = ticker;
+    this.industry = industry;
     this.name = name;
     // Attributes that should be updated every hour
     this.price = undefined;
