@@ -8,6 +8,7 @@ class Trader {
     this.addStock = this.addStock.bind(this);
     this.getStock = this.getStock.bind(this);
     this.getPortfolioValue = this.getPortfolioValue.bind(this);
+    this.trainingOnly = true;
   }
   addStock(stock){
     this.stockMap[stock.ticker] = stock;

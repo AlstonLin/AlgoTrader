@@ -1,18 +1,7 @@
 let Trader = require('./trader.js');
 let Stock = require('./stock.js');
 
-module.exports = function(code, stocks, tradingData, startingCash){
-  let trader = new Trader(startingCash); 
-  // Creates the stocks
-  for (let idx in stocks){
-    let stock = stocks[idx];
-    let stockObj = new Stock(trader, stock["ticket"], stock["company"], stock["industry"]);
-    trader.addStock(stockObj);
-  }
-  // This expects the code to set the variable stockUpdate (i.e. AlgoTrader.stockUpdate = function(stock){ ) ...
-  let AlgoTrader = trader;
-  eval("(function(){" + code + "}())");
-  // Runs through the tradingData and simulates it
+var simulateTrades = function(AlgoTrader, tradingData){
   let periods = tradingData[0].trades.length;
   for (let i = 0; i < periods; i++){
     let time = tradingData[0].trades[i].Time[0];
@@ -29,8 +18,26 @@ module.exports = function(code, stocks, tradingData, startingCash){
       AlgoTrader.time = stockData.Time[0];
       AlgoTrader.stockUpdate(stock);
     }
-    // TODO: Do some kind of tracking
   }
+};
+
+module.exports = function(code, stocks, trainingData, tradingData, startingCash){
+  let trader = new Trader(0); 
+  // Creates the stocks
+  for (let idx in stocks){
+    let stock = stocks[idx];
+    let stockObj = new Stock(trader, stock["ticket"], stock["company"], stock["industry"]);
+    trader.addStock(stockObj);
+  }
+  // This expects the code to set the variable stockUpdate (i.e. AlgoTrader.stockUpdate = function(stock){ ) ...
+  let AlgoTrader = trader;
+  eval("(function(){" + code + "}())");
+  // Training Code
+  simulateTrades(AlgoTrader, trainingData);
+  AlgoTrader.trainingOnly = false;
+  AlgoTrader.currentCash = startingCash;
+  // Runs through the tradingData and simulates it
+  simulateTrades(AlgoTrader, tradingData);
   let portfolioValue = AlgoTrader.getPortfolioValue();
   let data = {
     cash: AlgoTrader.currentCash,
