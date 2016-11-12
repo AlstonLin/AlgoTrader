@@ -14,9 +14,13 @@ router.get("/stocks", function (req, res) {
 })
 
 router.post("/algorithmSimulation", function (req, res) {
+  let symbols = ''
+  for (let s in req.stocks) {
+    symbols += (s.ticket + ",")
+  }
 	axios.get(TRADES_URL, {
 		params: {'_Token' : NASDAQ_TOKEN,
-      'Symbols' : req.body.ticket,
+      'Symbols' : symbols,
       'StartDateTime' : req.body.startTime + " 09:30:00",
       'EndDateTime' : req.body.endTime + " 16:00:00",
       'MarketCenters' : '' ,
@@ -37,7 +41,7 @@ router.post("/algorithmSimulation", function (req, res) {
           val.ticker = item["Symbol"];
           return val;
         });
-        var val = simulate(req.body.code, [], json, req.body.startingCash);
+        var val = simulate(req.body.code, , json, req.body.startingCash);
         res.send(val);
       }
     });
