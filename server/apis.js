@@ -16,19 +16,18 @@ router.get("/stocks", function (req, res) {
 router.post("/algorithmSimulation", function (req, res) {
   // Parses ticker symbols
 
-  console.log(JSON.stringify(req.body))
   let symbols = ''
   req.body.stocks.forEach(function(s) {
     symbols = symbols + (s.ticket + ",")
   })
 
   var trainingStarteDate = new Date(req.body.startTime)
-  var trainingEndDate = new Date(req.body.endDate)
+  var trainingEndDate = new Date(req.body.endTime)
   trainingStarteDate.setDate(trainingStarteDate.getDate() - 30)
   trainingEndDate.setDate(trainingEndDate.getDate() - 30)
 
-
-
+  let startTrainingStr = trainingStarteDate.getMonth() + "/" + trainingStarteDate.getDate() + "/" + trainingStarteDate.getFullYear() + " 09:30:00";
+  let endTrainingStr = trainingEndDate.getMonth() + "/" + trainingEndDate.getDate() + "/" + trainingEndDate.getFullYear() + " 15:30:00";
   function getMainData() {
     return axios.get(TRADES_URL, {
       params: {
@@ -42,43 +41,44 @@ router.post("/algorithmSimulation", function (req, res) {
       }
     })
   }
-   
+
   function getTrainingDate() {
     return axios.get(TRADES_URL, {
-    params: {
-      '_Token' : NASDAQ_TOKEN,
-      'Symbols' : symbols,
-      'StartDateTime' : JSON.stringify(trainingStarteDate) + " 09:30:00",
-      'EndDateTime' : JSON.stringify(trainingEndDate) + " 15:30:00",
-      'MarketCenters' : '' ,
-      'TradePrecision': 'Hour',
-      'TradePeriod':'1'
-    }
-  })
+      params: {
+        '_Token' : NASDAQ_TOKEN,
+        'Symbols' : symbols,
+        'StartDateTime' : startTrainingStr,
+        'EndDateTime' : endTrainingStr,
+        'MarketCenters' : '' ,
+        'TradePrecision': 'Hour',
+        'TradePeriod':'1'
+      }
+    })
   }
-   
+
   axios.all([getMainData(), getTrainingDate()])
-    .then(axios.spread(function (main, training) {
-      parseAndSimplify(main.data).then(function (mainData) {
-          return parseAndSimplify(training.data);
-      }).then(function(trainingData) {
-          try {
+  .then(axios.spread(function (main, training) {
+    return parseAndSimplify(main.data).then(function (mainData) {
+      return parseAndSimplify(training.data).then(function(trainingData) {
+        try {
             // Execute simulation
             var val = simulate(req.body.code, req.body.stocks, trainingData, mainData, parseFloat(req.body.startingCash));
             res.send(val);
           } catch(err){
             console.log(err);
           }
-      })}))
-  .catch(function(error) {
+        });
+    });
+  })).catch(function(error) {
     console.log(error);
     res.json(error)
   });
-})
+});
 
-function parseAndSimplify(data) {
-  let promise = new Promise(function(resolve, reject){
-    parseString(data, function (err, json) {
+
+  function parseAndSimplify(data) {
+    let promise = new Promise(function(resolve, reject){
+      parseString(data, function (err, json) {
         if (err) {
           res.json({Error: "Nasdaq api shit the bed"})
         } else {
@@ -87,19 +87,16 @@ function parseAndSimplify(data) {
           // Cleans up the JSON
           json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
           json = _.map(json, function(item){
+            console.log(JSON.stringify(item))
             let val = {};
-            console.log("THIS1")
             val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
-            console.log("THIS2")
             val.ticker = item["Symbol"];
             return val;
           });
           // Makes all times consistent
           for (let idx in json){
             json[idx].trades = _.filter(json[idx].trades, function(item){
-              console.log("THIS11")
               let time = item.Time[0];
-              console.log("THIS12")
               for (let i in acceptableTimes){
                 if (time.includes(acceptableTimes[i])) return true;
               }
@@ -109,8 +106,10 @@ function parseAndSimplify(data) {
           resolve(json)
         }
       })
-  });
-  return promise;
-}
+    });
+    return promise;
+  }
 
-module.exports = router
+  module.exports = router
+
+

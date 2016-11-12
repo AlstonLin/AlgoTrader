@@ -18,6 +18,13 @@ var simulateTrades = function(AlgoTrader, tradingData){
       AlgoTrader.time = stockData.Time[0];
       AlgoTrader.stockUpdate(stock);
     }
+    // Statistics
+    if (!AlgoTrader.trainingOnly){
+      AlgoTrader.portfolioValueHistory.push({
+        time: time,
+        value: AlgoTrader.currentCash + AlgoTrader.getPortfolioValue()
+      });
+    }
   }
 };
 
@@ -46,6 +53,7 @@ module.exports = function(code, stocks, trainingData, tradingData, startingCash)
     percentOfOriginal: (AlgoTrader.currentCash + portfolioValue) / startingCash,
     buyHistory: AlgoTrader.buyHistory,
     sellHistory: AlgoTrader.sellHistory,
+    portfolioHistory: AlgoTrader.portfolioValueHistory,
     tradingData: tradingData
   }
   return data;

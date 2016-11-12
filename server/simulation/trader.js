@@ -4,6 +4,7 @@ class Trader {
     this.stockMap = {};
     this.buyHistory = [];
     this.sellHistory = [];
+    this.portfolioValueHistory = [];
     this.time = undefined;
     this.addStock = this.addStock.bind(this);
     this.getStock = this.getStock.bind(this);
