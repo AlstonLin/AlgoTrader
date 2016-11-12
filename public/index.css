@@ -1,4 +1,38 @@
 
+
+.title-container {
+	padding-top: 20vh;
+	padding-bottom: 20vh;
+	border-bottom: 3px white solid;
+	background-image: url("http://carbonadvantageprogram.com//wp-content/uploads/2014/05/Buildings-and-sky.jpg");
+}
+.search {
+	margin-bottom: 20px;
+}
+
+.graphs {
+	height: 53vh;
+	background-color: white;
+	margin-left: 13px;
+	opacity: 0.5;
+}
+
+
+.item {
+	font-family: "PT Sans";
+}
+
+body {
+	background-image: url("http://www.marvingermo.com/wp-content/uploads/2016/06/Stocks-By-Request.jpg")!important;
+}
+.title-text {
+	font-size: 25px !important;
+	margin-bottom: 0 !important;
+	margin-top: 0px !important;
+	color: white;
+	font-family: "Cormorant Garamond" !important;
+}
+
 .start {
 	height: 27px !important;
 }
@@ -8,18 +42,21 @@ span {
 }
 
 .description {
+	font-family: "PT Sans";
+	color: black;
 	margin-top: 25px;
-	font-size: 25px;
+	font-size: 15px;
 	font-weight: normal;
 }
 
 
 .my-heading {
+	height: 10vh;
+	border-top: black 2px solid;
 	padding-top: 20px;
+	margin: 0px !important;
 	padding-bottom: 20px;
-	color: black;
-	background-color: #eee;
-	border-bottom: black 2px solid;
+	background-color: rgba(0,0,0,0.5) !important;
 }
 
 
@@ -27,21 +64,32 @@ span {
     width: 900px;
     height: 400px;
     resize: none;
-    border-color: lightgrey;
+    border-color: white;
+    font-family: "PT Sans" !important;
+    padding-left: : 0px;
 }
 
 
 .cash {
 	width: 60%;
+	min-width: 200px;
+	max-width: 2.5em;
 	height: 27px !important;
 }
 
-
+.right_side {
+	margin-left: 0px !important;
+	border-left: solid black 2px !important;
+}
 
 p {
-	font-size: 20px;
+	font-size: 15px;
+	color: white;
+	font-family: "PT Sans";
 }
 
-.h1 {
-	margin-top: 0px !important;
+.row {
+	margin-top: 10px !important;
 }
+
+

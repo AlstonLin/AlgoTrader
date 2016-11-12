@@ -24,20 +24,21 @@
   <script src="http://esironal.github.io/cmtouch/mode/htmlmixed/htmlmixed.js"></script>
   <script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
   <script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
-
+  <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond|Montserrat|Raleway" rel="stylesheet">
   <link rel="stylesheet" href="http://esironal.github.io/cmtouch/theme/neonsyntax.css">
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" media="screen"
   href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
 
 </head>
 <body>
 
-<div class="my-heading h1 text-center">
-  <h1>Algorithm Trading Simulating</h1>
-  <p class="description">Blurb about algorithm trading</p>
+<div class="title-container"> 
+  <div class="my-heading text-center">
+    <div class="title-text" style="color:  white; text-align: middle; margin-left: 75px"> Algorithm Trading Simulation</div>
+  </div>
 </div>
-
 
 <div class="container my-container">
   <div class="row" style="margin-bottom: 30px;">
@@ -77,7 +78,7 @@
     <div class="ui fluid search selection dropdown">
       <input type="hidden" name="country">
       <i class="dropdown icon"></i>
-      <div class="default text">Select Company</div>
+      <div class="default text" style="color: lightgrey">Select Company</div>
       <div class="menu">
       <div class="item" data-value="af">Afghanistan</div>
       <div class="item" data-value="ax">Aland Islands</div>
@@ -92,16 +93,23 @@
     <div class="ui fluid search selection dropdown">
       <input type="hidden" name="company">
       <i class="dropdown icon"></i>
-      <div class="default text">Select Language</div>
+      <div class="default text" style="font-family: "PT Sans";>Select Language</div>
       <div class="menu">
       <div class="item">Javascript</div>
       </div>
     </div>
     </div>
+
+
+  <div class="col-sm-6">
+    <div class="graphs">
+    </div>
   </div>
-</div>
-<br>
-<br>
+  </div>
+  </div>
+  <br>
+  <br>
+
 
 
       
@@ -140,10 +148,8 @@
     //$('.ui.dropdown').dropdown();
    $( document ).ready(function() {
       $('.ui.dropdown').dropdown();
-       axios.get('/api/stocks')
-          .then(function(respone){
-          console.log(response);  
-       })
+ 
+       
        //  $("#companyMenu").append("<div class="item" data-value=""></div>)
     });
 </script>
