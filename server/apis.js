@@ -16,7 +16,7 @@ router.get("/stocks", function (req, res) {
 router.post("/algorithmSimulation", function (req, res) {
   // Parses ticker symbols
 
-  console.log(req.body)
+  console.log(JSON.stringify(req.body))
   let symbols = ''
   req.body.stocks.forEach(function(s) {
     symbols = symbols + (s.ticket + ",")
@@ -60,7 +60,7 @@ router.post("/algorithmSimulation", function (req, res) {
         }
         try {
           // Execute simulation
-          var val = simulate(req.body.code, req.body.stocks, json, req.body.startingCash);
+          var val = simulate(req.body.code, req.body.stocks, json, parseFloat(req.body.startingCash));
           res.send(val);
         } catch(err){
           console.log(err);

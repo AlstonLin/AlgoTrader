@@ -50,21 +50,23 @@
     }
       var simulation_data = {
         stocks: stocks,
-        startingMoney: $("#cash").val(),
+        startingCash: $("#cash").val(),
         startTime: $('#_start').val(),
-        endTime:$('#_end').val(),
+        endTime: $('#_end').val(),
         code: editor.getValue(" ")
       }
-      console.log(simulation_data)
+      console.log(JSON.stringify(simulation_data))
       $.ajax({
-        url:"/api/algorithmSimulation",
-        type:"POST",
-        data: simulation_data,
+        type: "POST",
+        url: "/api/algorithmSimulation",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
         success: function(data){
           console.log(data)
         },
-      })
-      console.log(simulation_data)
+        data: JSON.stringify(simulation_data)
+      });
+      console.log(JSON.stringify(simulation_data))
   })
 
   // {
