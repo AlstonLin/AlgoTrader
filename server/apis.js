@@ -25,7 +25,7 @@ router.post("/algorithmSimulation", function (req, res) {
       '_Token' : NASDAQ_TOKEN,
       'Symbols' : symbols,
       'StartDateTime' : req.body.startTime + " 09:30:00",
-      'EndDateTime' : req.body.endTime + " 3:30:00",
+      'EndDateTime' : req.body.endTime + " 15:30:00",
       'MarketCenters' : '' ,
       'TradePrecision': 'Hour',
       'TradePeriod':'1'

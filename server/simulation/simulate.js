@@ -38,7 +38,8 @@ module.exports = function(code, stocks, tradingData, startingCash){
     totalValue: AlgoTrader.currentCash + portfolioValue,
     percentOfOriginal: (AlgoTrader.currentCash + portfolioValue) / startingCash,
     buyHistory: AlgoTrader.buyHistory,
-    sellHistory: AlgoTrader.sellHistory
+    sellHistory: AlgoTrader.sellHistory,
+    tradingData: tradingData
   }
   return data;
 }
