@@ -42,7 +42,7 @@ router.post("/algorithmSimulation", function (req, res) {
     })
   }
 
-  function getTrainingDate() {
+  function getTrainingData() {
     return axios.get(TRADES_URL, {
       params: {
         '_Token' : NASDAQ_TOKEN,
@@ -56,18 +56,34 @@ router.post("/algorithmSimulation", function (req, res) {
     })
   }
 
-  axios.all([getMainData(), getTrainingDate()])
-  .then(axios.spread(function (main, training) {
+  function getIndexData() {
+    return axios.get(TRADES_URL, {
+      params: {
+        '_Token' : NASDAQ_TOKEN,
+        'Symbols' : "SPY",
+        'StartDateTime' : req.body.startTime + " 09:30:00",
+        'EndDateTime' : req.body.endTime + " 15:30:00",
+        'MarketCenters' : '' ,
+        'TradePrecision': 'Hour',
+        'TradePeriod':'1'
+      }
+    })
+  }
+  
+  axios.all([getMainData(), getTrainingData(), getIndexData()])
+  .then(axios.spread(function (main, training, index) {
     return parseAndSimplify(main.data).then(function (mainData) {
-      return parseAndSimplify(training.data).then(function(trainingData) {
-        try {
-            // Execute simulation
-            var val = simulate(req.body.code, req.body.stocks, trainingData, mainData, parseFloat(req.body.startingCash));
-            res.send(val);
-          } catch(err){
-            console.log(err);
-          }
+      return parseAndSimplify(training.data).then(function (trainingData) {
+        return parseAndSimplify(index.data).then(function (indexData) {
+          try {
+              // Execute simulation
+              var val = simulate(req.body.code, req.body.stocks, trainingData, mainData, indexData, parseFloat(req.body.startingCash));
+              res.send(val);
+            } catch(err){
+              console.log(err);
+            }
         });
+      });
     });
   })).catch(function(error) {
     console.log(error);
@@ -76,40 +92,38 @@ router.post("/algorithmSimulation", function (req, res) {
 });
 
 
-  function parseAndSimplify(data) {
-    let promise = new Promise(function(resolve, reject){
-      parseString(data, function (err, json) {
-        if (err) {
-          res.json({Error: "Nasdaq api shit the bed"})
-        } else {
-          //console.log(json)
-          const acceptableTimes = ["09:30:00.000", "10:30:00.000", "11:30:00.000", "12:30:00.000", "13:30:00.000", "14:30:00.000", "15:30:00.000"]
-          // Cleans up the JSON
-          json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
-          json = _.map(json, function(item){
-
-            let val = {};
-            val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
-            val.ticker = item["Symbol"];
-            return val;
+function parseAndSimplify(data) {
+  let promise = new Promise(function(resolve, reject){
+    parseString(data, function (err, json) {
+      if (err) {
+        res.json({Error: "Nasdaq api shit the bed"})
+      } else {
+        const acceptableTimes = ["09:30:00.000", "10:30:00.000", "11:30:00.000", "12:30:00.000", "13:30:00.000", "14:30:00.000", "15:30:00.000"]
+        // Cleans up the JSON
+        json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
+        json = _.map(json, function(item){
+          let val = {};
+          val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
+          val.ticker = item["Symbol"];
+          return val;
+        });
+        // Makes all times consistent
+        for (let idx in json){
+          json[idx].trades = _.filter(json[idx].trades, function(item){
+            let time = item.Time[0];
+            for (let i in acceptableTimes){
+              if (time.includes(acceptableTimes[i])) return true;
+            }
+            return false;
           });
-          // Makes all times consistent
-          for (let idx in json){
-            json[idx].trades = _.filter(json[idx].trades, function(item){
-              let time = item.Time[0];
-              for (let i in acceptableTimes){
-                if (time.includes(acceptableTimes[i])) return true;
-              }
-              return false;
-            });
-          }
-          resolve(json)
         }
-      })
-    });
-    return promise;
-  }
+        resolve(json)
+      }
+    })
+  });
+  return promise;
+}
 
-  module.exports = router
+module.exports = router
 
 
