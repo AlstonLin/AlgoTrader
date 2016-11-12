@@ -15,6 +15,8 @@ router.get("/stocks", function (req, res) {
 
 router.post("/algorithmSimulation", function (req, res) {
   // Parses ticker symbols
+
+  console.log(req.body)
   let symbols = ''
   req.body.stocks.forEach(function(s) {
     symbols = symbols + (s.ticket + ",")
