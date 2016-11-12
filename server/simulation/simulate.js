@@ -5,7 +5,7 @@ module.exports = function(code, stocks, tradingData, startingCash){
   // Creates the stocks
   for (let idx in stocks){
     var stock = stocks[idx];
-    trader.addStock(new Stock(trader, stock.ticket, stocks.company));
+    trader.addStock(new Stock(trader, stock.ticket, stock.company));
   }
   // This expects the code to set the variable stockUpdate (i.e. AlgoTrader.stockUpdate = function(stock){ ) ...
   var AlgoTrader = trader;

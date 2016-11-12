@@ -15,11 +15,14 @@ router.get("/stocks", function (req, res) {
 
 router.post("/algorithmSimulation", function (req, res) {
   let symbols = ''
-  for (let s in req.stocks) {
-    symbols += (s.ticket + ",")
-  }
+  console.log(req.body.stocks)
+  req.body.stocks.forEach(function(s) {
+    symbols = symbols + (s.ticket + ",")
+  })
+  console.log("SYMBOLS IS :" , symbols)
 	axios.get(TRADES_URL, {
-		params: {'_Token' : NASDAQ_TOKEN,
+		params: {
+      '_Token' : NASDAQ_TOKEN,
       'Symbols' : symbols,
       'StartDateTime' : req.body.startTime + " 09:30:00",
       'EndDateTime' : req.body.endTime + " 16:00:00",
@@ -30,10 +33,10 @@ router.post("/algorithmSimulation", function (req, res) {
 	})
   .then(function (response) {
     parseString(response.data, function (err, json) {
-      console.log("JSON: " + JSON.stringify(json));
       if (err) {
         res.json({Error: "Nasdaq api shit the bed"})
       } else {
+        //console.log("gdfgd")
         json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
         json = _.map(json, function(item){
           let val = {};
@@ -41,7 +44,7 @@ router.post("/algorithmSimulation", function (req, res) {
           val.ticker = item["Symbol"];
           return val;
         });
-        var val = simulate(req.body.code, , json, req.body.startingCash);
+        var val = simulate(req.body.code, req.body.stocks, json, req.body.startingCash);
         res.send(val);
       }
     });
