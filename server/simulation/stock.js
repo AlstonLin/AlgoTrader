@@ -30,7 +30,7 @@ class Stock {
 
   buy(quantity){
     var totalCost = quantity * this.price;
-    if (totalCost > this.trader.currentCash){
+    if (quantity <= 0 || totalCost > this.trader.currentCash){
       return false;
     }
     this.trader.currentCash -= totalCost;
@@ -39,13 +39,14 @@ class Stock {
       quantity: quantity,
       price: this.price,
       total: totalCost,
-      time: this.trader.time
+      time: this.trader.time,
+      ticker: this.ticker
     });
     return true
   }
 
   sell(quantity){
-    if (quantity > this.quantityOwned){
+    if (quantity > this.quantityOwned || quantity <= 0){
       return false;
     }
     this.quantityOwned -= quantity;
@@ -54,7 +55,8 @@ class Stock {
       quantity: quantity,
       price: this.price,
       total: (quantity * this.price),
-      time: this.trader.time
+      time: this.trader.time,
+      ticker: this.ticker
     });
   }
 }

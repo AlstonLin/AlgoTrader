@@ -87,7 +87,7 @@ router.post("/algorithmSimulation", function (req, res) {
           // Cleans up the JSON
           json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
           json = _.map(json, function(item){
-            console.log(JSON.stringify(item))
+
             let val = {};
             val.trades = item["SummarizedTrades"][0]["SummarizedTrade"];
             val.ticker = item["Symbol"];
