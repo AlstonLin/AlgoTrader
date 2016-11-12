@@ -1,46 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>AlgoTrading</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/lib/codemirror.css">
+	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/addon/hint/show-hint.css">
+	<script src="http://esironal.github.io/cmtouch/lib/codemirror.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/hint/show-hint.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/hint/xml-hint.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/hint/html-hint.js"></script>
+	<script src="http://esironal.github.io/cmtouch/mode/xml/xml.js"></script>
+	<script src="http://esironal.github.io/cmtouch/mode/javascript/javascript.js"></script>
+	<script src="http://esironal.github.io/cmtouch/mode/css/css.js"></script>
+	<script src="http://esironal.github.io/cmtouch/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
+
+	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/theme/neonsyntax.css">
 </head>
 <body>
 
 <div class="jumbotron text-center">
-  <h1>My First Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p>
+  <h1>Algorithm Trading Simulating</h1>
+  <p>Blurb about algorithm trading</p>
 </div>
   
 <div class="container">
   <div class="row">
     <div class="col-sm-6">
-      <h3>Column 1</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+    <div class="ui fluid search selection dropdown">
+      <input type="hidden" name="country">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select Company</div>
+      <div class="menu">
+      <div class="item" data-value="af">Afghanistan</div>
+      <div class="item" data-value="ax">Aland Islands</div>
+      <div class="item" data-value="al">Albania</div>
+      </div>
     </div>
-    <div class="col-sm-6">
-        <div class="dropdown">
-            
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                <li><a href="#">HTML</a></li>
-                <li><a href="#">CSS</a></li>
-                <li><a href="#">JavaScript</a></li>
-              </ul>
-        </div>
-      <!--
-      <h3>Column 2</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>-->
+    <br>
+    <br>
+    <div id="code"></div>
+    <br>
+    <br>
+    <div class="ui fluid search selection dropdown">
+      <input type="hidden" name="company">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select Language</div>
+      <div class="menu">
+      <div class="item">Javascript</div>
+      </div>
     </div>
     </div>
-    </div>
+  </div>
 </div>
+<br>
+<br>
+<script type="text/javascript">
+    CodeMirror.commands.autocomplete = function(cm) {
+        CodeMirror.showHint(cm, CodeMirror.hint.html);
+    }
+    window.onload = function() {
+        editor = CodeMirror(document.getElementById("code"), {
+            mode: "text/javascript",
+            theme:"neat",
+            lineWrapping: true,
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            extraKeys: {
+                "Ctrl-Space": "autocomplete"
+            },
+   //         value: "<!doctype html>\n<html>\n  " + document.documentElement.innerHTML + "\n</html>"
+        });
+    };
+</script>
+
+<script>
+    //$('.ui.dropdown').dropdown();
+
+
+   $( document ).ready(function() {
+      $('.ui.dropdown').dropdown();
+       axios.get('/api/stocks')
+          .then(function(respone){
+          console.log(response);  
+       })
+       //  $("#companyMenu").append("<div class="item" data-value=""></div>)
+    });
+</script>
 </body>
 </html>
 

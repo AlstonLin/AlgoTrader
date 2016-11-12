@@ -1,0 +1,9 @@
+.text_edit{
+    width: 900px;
+    height: 400px;
+    resize: none;
+    border-color: lightgrey;
+}
+body{
+  background-color: darkgrey;
+}
