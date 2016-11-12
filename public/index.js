@@ -2,7 +2,8 @@
   var selectedCompanies = []
   var selectedTicket = ""
   var companies = []
-  $('.ui.dropdown').dropdown({
+  $('.ui.dropdown').dropdown();
+  $('#companies').dropdown({
     onChange: function(text, value, $selectedItem) {
       selectedCompanies.push($selectedItem)
       selectedTicket = text
