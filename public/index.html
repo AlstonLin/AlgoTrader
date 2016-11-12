@@ -4,27 +4,18 @@
   <title>AlgoTrading</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--CSS File-->
   <link rel="stylesheet" type="text/css" href="index.css">
-	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/lib/codemirror.css">
-	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/addon/hint/show-hint.css">
-	<script src="http://esironal.github.io/cmtouch/lib/codemirror.js"></script>
-	<script src="http://esironal.github.io/cmtouch/addon/hint/show-hint.js"></script>
-	<script src="http://esironal.github.io/cmtouch/addon/hint/xml-hint.js"></script>
-	<script src="http://esironal.github.io/cmtouch/addon/hint/html-hint.js"></script>
-	<script src="http://esironal.github.io/cmtouch/mode/xml/xml.js"></script>
-	<script src="http://esironal.github.io/cmtouch/mode/javascript/javascript.js"></script>
-	<script src="http://esironal.github.io/cmtouch/mode/css/css.js"></script>
-	<script src="http://esironal.github.io/cmtouch/mode/htmlmixed/htmlmixed.js"></script>
-	<script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
-	<script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
-
-	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/theme/neonsyntax.css">
-</head>
-<body>
-
-<div class="jumbotron text-center">
-  <h1>Algorithm Trading Simulating</h1>
-  <p>Blurb about algorithm trading</p>
+  
+  <!--Bootstrap, SemanticUi, JQuery-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+  
+  <!--CDNs for CodeMirror-->
   <link rel="stylesheet" href="http://esironal.github.io/cmtouch/lib/codemirror.css">
   <link rel="stylesheet" href="http://esironal.github.io/cmtouch/addon/hint/show-hint.css">
   <script src="http://esironal.github.io/cmtouch/lib/codemirror.js"></script>
@@ -37,12 +28,18 @@
   <script src="http://esironal.github.io/cmtouch/mode/htmlmixed/htmlmixed.js"></script>
   <script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
   <script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
-
+  
+  <!--CDN for D3-->
+  <script src="https://d3js.org/d3.v4.js"></script>
+  
+  <!--CDN for DateTimePicker-->
   <link rel="stylesheet" href="http://esironal.github.io/cmtouch/theme/neonsyntax.css">
   <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" media="screen"
   href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
-
+  
+  <!--CDN for axios-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
@@ -56,13 +53,13 @@
   <div class="row" style="margin-bottom: 30px;">
     <div class="col-lg-4" style="text-align: center;">
       <p> Cash </p>
-      <input class="cash" type="text"> 
+      <input id="cash" type="text"> 
     </div>
 
     <div class="col-lg-4" style="text-align: center;">
       <p> Start </p>
       <div class="input-append date datetimepicker">
-        <input class="start" type="text"></input>
+        <input class="start" type="text" id="_start">
             <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
             </span>
@@ -72,7 +69,7 @@
     <div class="col-lg-4" style="text-align: center;">
       <p> End </p>
       <div class="input-append date datetimepicker">
-        <input class="start" type="text"></input>
+        <input class="end" type="text" id="_end">
           <span class="add-on">
           <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
@@ -86,22 +83,17 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-6">
-    <div class="ui fluid search selection dropdown">
+    <div class="ui fluid search selection multiple dropdown">
       <input type="hidden" name="country">
       <i class="dropdown icon"></i>
       <div class="default text">Select Company</div>
-      <div class="menu">
-      <div class="item" data-value="af">Afghanistan</div>
-      <div class="item" data-value="ax">Aland Islands</div>
-      <div class="item" data-value="al">Albania</div>
+      <div class="menu" id="append_here">
       </div>
     </div>
+
     <br>
     <br>
-    <div id="code"></div>
-    <br>
-    <br>
+    <div class="col-xs-3">
     <div class="ui fluid search selection dropdown">
       <input type="hidden" name="company">
       <i class="dropdown icon"></i>
@@ -111,52 +103,26 @@
       </div>
     </div>
     </div>
+    <div class="col-xs-12">
+    <div id="code"></div>
+    </div>
+    <div class="col-xs-2">
+    <button class="btn btn-primary" id="go_button">Go</button>
+    </div>
+    <br>
+    <br>
+    
   </div>
 </div>
 <br>
 <br>
+
+
+      
 <script type="text/javascript"
   src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
 </script>
   
-<script type="text/javascript">
-  $('.datetimepicker').datetimepicker({
-  format: 'dd/MM/yyyy',
-  language: 'en-US'
-  });
-</script>
-
-<script type="text/javascript">
-    CodeMirror.commands.autocomplete = function(cm) {
-        CodeMirror.showHint(cm, CodeMirror.hint.html);
-    }
-    window.onload = function() {
-        editor = CodeMirror(document.getElementById("code"), {
-            mode: "text/javascript",
-            theme:"neat",
-            lineWrapping: true,
-            lineNumbers: true,
-            styleActiveLine: true,
-            matchBrackets: true,
-            extraKeys: {
-                "Ctrl-Space": "autocomplete"
-            },
-   //         value: "<!doctype html>\n<html>\n  " + document.documentElement.innerHTML + "\n</html>"
-        });
-    };
-</script>
-
-<script>
-    //$('.ui.dropdown').dropdown();
-   $( document ).ready(function() {
-      $('.ui.dropdown').dropdown();
-       axios.get('/api/stocks')
-          .then(function(respone){
-          console.log(response);  
-       })
-       //  $("#companyMenu").append("<div class="item" data-value=""></div>)
-    });
-</script>
-
+<script type="text/javascript" src="./index.js"></script>
 </body>
 </html>
