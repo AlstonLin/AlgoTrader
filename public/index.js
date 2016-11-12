@@ -35,7 +35,7 @@
     }
   });
   $('.datetimepicker').datetimepicker({
-    format: 'dd/MM/yyyy',
+    format: 'MM/dd/yyyy',
     language: 'en-US'
   });
   
