@@ -10,12 +10,14 @@ var app = express();
 //middleware
 app.use(bodyParser.json())
 
+app.use(express.static(path.join(__dirname, '../public')));
+
 app.use("/api", api)
 
 // TODO: Finish this endpoint to serve the main page
-app.get("/", function(req, res){
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
-});
+// app.get("/", function(req, res){
+//   res.sendFile(path.join(__dirname, '../public', 'index.html'));
+// });
 
 app.listen(PORT, function(){
   console.log("Server listening on port " + PORT);
