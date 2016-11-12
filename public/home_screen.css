@@ -19,7 +19,7 @@
 #circle_name {
 	color: white;
 	font-family: "Raleway";
-	font-size: 70px;
+	font-size: -webkit-xxx-large;
 	text-align: center;
 	margin-top: 130px;
 
@@ -36,17 +36,18 @@
 }
 
 
-
 .headings {
 	color: white;
 	display: inline-block;
-	margin-right: 10px;
+	margin-right: 20px;
 	float: right;
 	margin-top: 15px;
 	background-color: black;
 	outline-color: none;
 	border: none;
 	padding-top: 10px;
+	font-size: 20px;
+	text-decoration: none;
 }
 
 
@@ -54,7 +55,7 @@
 
 p {
 	color: white;
-	font-size: 80px;
+	font-size: 50px;
 	padding: 10px;
 	margin: 0px;
 	stroke: 2px solid;
@@ -65,7 +66,7 @@ p {
   width: 400px;
   height: 400px;
   -webkit-border-radius: 200px;
-  -moz-border-radius: 100px;
+  -moz-border-radius: 200px;
   background: black;
   margin-left: 530px;
   border: white 2px solid;
