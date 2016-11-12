@@ -39,7 +39,7 @@ router.post("/algorithmSimulation", function (req, res) {
       if (err) {
         res.json({Error: "Nasdaq api shit the bed"})
       } else {
-        const acceptableTimes = ["09:30:00.000", "10:30:00.000", "11:30:00.000", "12:30:00.000", "13:30:00.000", "14:30:00.000", "15:30:00.000"]
+        const acceptableTimes = ["09:30:00", "10:30:00", "11:30:00", "12:30:00", "13:30:00", "14:30:00", "15:30:00"]
         // Cleans up the JSON
         json = json["ArrayOfSummarizedTradeCollection"]["SummarizedTradeCollection"];
         json = _.map(json, function(item){
@@ -60,7 +60,7 @@ router.post("/algorithmSimulation", function (req, res) {
         }
         try {
           // Execute simulation
-          var val = simulate(req.body.code, req.body.stocks, json, parseFloat(req.body.startingCash));
+          var val = simulate(req.body.code, req.body.stocks, json, json, parseFloat(req.body.startingCash));
           res.send(val);
         } catch(err){
           console.log(err);
