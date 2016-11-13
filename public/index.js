@@ -10,12 +10,15 @@
   var companies = []
   $('.ui.dropdown').dropdown();
   $('#companies').dropdown({
-    onChange: function(text, value, $selectedItem) {
+    onAdd(value, text, $selectedItem) {
       selectedCompanies.push($selectedItem)
       selectedTicket = text
       console.log(selectedCompanies, selectedTicket)
       //NOTE: Will break if user deleted a selection
     },
+    onRemove(value, text, $selectedItem) {
+      selectedCompanies.splice($.inArray(value, selectedCompanies), 1);
+      }
   }); 
 
   $.ajax({
@@ -23,7 +26,7 @@
   }).done(function(data) {
     companies = data
     companies.forEach(function(stock) {
-      $('#append_here').append("<div class='item' data-value='"  + stock.Symbol + "'>" + stock.Name + "</div>")
+      $('#append_here').append('<div class="item" data-value="'  + stock.Symbol + '">' + stock.Name + "</div>")
     })
   });
 
@@ -35,6 +38,7 @@
     mode: "javascript",
     lineWrapping: true,
     lineNumbers: true,
+    value: "AlgoTrader.stockUpdate = function(stock){\n  stock.sell(1);\n  stock.buy(1));\n };",
     styleActiveLine: true,
     matchBrackets: true,
     extraKeys: {
@@ -47,13 +51,14 @@
   });
   
   $("#go_button").click(function(e) {
+    $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
     var ticketSelection = selectedTicket.split(",")
     var stocks = []
     for (var i = 0; i<ticketSelection.length; i++) {
-        stocks.push({
-          company: selectedCompanies[i],
-          ticket: ticketSelection[i]
-        })
+      stocks.push({
+        company: selectedCompanies[i],
+        ticket: ticketSelection[i]
+      })
     }
       var simulation_data = {
         stocks: stocks,

@@ -4,6 +4,7 @@ let axios = require('axios')
 let parseString = require('xml2js').parseString
 let _ = require('lodash');
 let simulate = require('./simulation/simulate'); 
+let Deferred = require('deferred');
 
 const NASDAQ_TOKEN = 'BC2B181CF93B441D8C6342120EB0C971'
 
@@ -14,13 +15,12 @@ router.get("/stocks", function (req, res) {
 })
 
 router.post("/algorithmSimulation", function (req, res) {
+  let mainData = [];
   // Parses ticker symbols
-
-  let symbols = ''
-  req.body.stocks.forEach(function(s) {
-    symbols = symbols + (s.ticket + ",")
-  })
-
+  let symbols = _.map(req.body.stocks, function(stock){
+    return stock.ticket;
+  });
+  symbols.push("SPY");
   var trainingStarteDate = new Date(req.body.startTime)
   var trainingEndDate = new Date(req.body.endTime)
   trainingStarteDate.setDate(trainingStarteDate.getDate() - 30)
@@ -28,11 +28,47 @@ router.post("/algorithmSimulation", function (req, res) {
 
   let startTrainingStr = trainingStarteDate.getMonth() + "/" + trainingStarteDate.getDate() + "/" + trainingStarteDate.getFullYear() + " 09:30:00";
   let endTrainingStr = trainingEndDate.getMonth() + "/" + trainingEndDate.getDate() + "/" + trainingEndDate.getFullYear() + " 15:30:00";
-  function getMainData() {
+
+  function getMainData(training) {
+    let def = Deferred();
+    let promise = Promise.resolve();
+    while (symbols.length != 0){
+      let symStr = null;
+      if (symbols.length == 1){
+        symStr = symbols[0] + ",";
+        symbols.shift();
+      } else {
+        symStr = symbols[0] + "," + symbols[1] + ",";
+        symbols.shift();
+        symbols.shift();
+      }
+      promise = promise.then(function(data){
+        if (!data) return getSymbols(symStr);
+        return parseAndSimplify(data.data).then(function(result){
+          if (data){
+            mainData = mainData.concat(result);
+          }
+          return getSymbols(symStr);
+        });
+      });
+    }
+    // The last promise
+    promise.then(function(data){
+      return parseAndSimplify(data.data).then(function(result){
+        if (data){
+          mainData = mainData.concat(result);
+        }
+        def.resolve(mainData);
+      });
+    });
+    return def.promise;
+  }
+
+  function getSymbols(syms){
     return axios.get(TRADES_URL, {
       params: {
         '_Token' : NASDAQ_TOKEN,
-        'Symbols' : symbols,
+        'Symbols' : syms,
         'StartDateTime' : req.body.startTime + " 09:30:00",
         'EndDateTime' : req.body.endTime + " 15:30:00",
         'MarketCenters' : '' ,
@@ -42,11 +78,11 @@ router.post("/algorithmSimulation", function (req, res) {
     })
   }
 
-  function getTrainingData() {
+  function getTrainingSymbols(syms) {
     return axios.get(TRADES_URL, {
       params: {
         '_Token' : NASDAQ_TOKEN,
-        'Symbols' : symbols,
+        'Symbols' : syms,
         'StartDateTime' : startTrainingStr,
         'EndDateTime' : endTrainingStr,
         'MarketCenters' : '' ,
@@ -56,38 +92,23 @@ router.post("/algorithmSimulation", function (req, res) {
     })
   }
 
-  function getIndexData() {
-    return axios.get(TRADES_URL, {
-      params: {
-        '_Token' : NASDAQ_TOKEN,
-        'Symbols' : "SPY",
-        'StartDateTime' : req.body.startTime + " 09:30:00",
-        'EndDateTime' : req.body.endTime + " 15:30:00",
-        'MarketCenters' : '' ,
-        'TradePrecision': 'Hour',
-        'TradePeriod':'1'
-      }
-    })
-  }
-  
-  axios.all([getMainData(), getTrainingData(), getIndexData()])
-  .then(axios.spread(function (main, training, index) {
-    return parseAndSimplify(main.data).then(function (mainData) {
-      return parseAndSimplify(training.data).then(function (trainingData) {
-        return parseAndSimplify(index.data).then(function (indexData) {
-          try {
-              // Execute simulation
-              var val = simulate(req.body.code, req.body.stocks, trainingData, mainData, indexData, parseFloat(req.body.startingCash));
-              res.send(val);
-            } catch(err){
-              console.log(err);
-            }
-        });
+  getMainData()(function() {
+    try {
+      let indexData = [];
+      mainData = _.filter(mainData, function(item){
+        if (item.ticker == "SPY"){
+          indexData.push(item);
+          return false;
+        }
+        return true;
       });
-    });
-  })).catch(function(error) {
-    console.log(error);
-    res.json(error)
+      // Execute simulation
+      let val = simulate(req.body.code, req.body.stocks, mainData, indexData, parseFloat(req.body.startingCash));
+      res.send(val);
+    } catch(err){
+      console.log(err);
+      res.status(500).send(err);
+    }
   });
 });
 
