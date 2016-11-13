@@ -72,7 +72,8 @@
   });
   
   $("#go_button").click(function(e) {
-    $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
+  //  $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
+    $("#go_button").addClass('loading');
 
     var stocks = []
     for (var i = 0; i < ticketSelection.length; i++) {
@@ -101,7 +102,12 @@
         } else {
           console.log(data)
         }
-         $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
+        $("#go_button").removeClass('loading');
+         //$("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
+      },
+      fail: function()
+      {
+        $("#go_button").removeClass('loading');
       },
       data: JSON.stringify(simulation_data)
     });
