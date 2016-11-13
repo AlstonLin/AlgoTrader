@@ -8,20 +8,11 @@
   }
 
   var stockPrices = []
-
   var selectedCompanies = []
   var ticketSelection = []
   var companies = []
-  $('.ui.dropdown').dropdown();
+  $('#languages').dropdown();
   $('#companies').dropdown({
-    /*
-    onChange(text, value, $selectedItem)
-    {
-      selectedCompanies.push($selectedItem)
-      selectedTicket =text
-      console.log(text, value, $selectedItem)
-    }*/
-    
     onAdd(text, value, $selectedItem) {
       selectedCompanies.push(value)
       ticketSelection.push(text);
@@ -32,7 +23,7 @@
       selectedCompanies.splice($.inArray(value, selectedCompanies), 1);
       ticketSelection.splice($.inArray(text, selectedCompanies), 1);
       console.log(text, value, $selectedItem)
-      }
+    }
   }); 
 
   $.ajax({
@@ -138,81 +129,72 @@
   })
 
   function prepareGraph(){
-    $("#results").append("<h3>Results</h3><div class='row'><div class='col-xs-6'><canvas id='chart1'></canvas></div><div class='col-xs-6'><canvas id='chart2'></canvas></div></div><div class='row'><ul class='nav nav-tabs' id='myTab'></ul><div class='tab-content' id='myTabContent'></div></div>")
-
-    var ctx = document.getElementById("chart1").getContext("2d");
-    ctx.canvas.width = 200;
-    ctx.canvas.height = 200;
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: portfolioHistory.labels,
-            datasets: [{
-                label: 'Time',
-                data: portfolioHistory.data,
-                borderColor: [
-                    'rgb(39, 169, 198)',
-                ],
-                fill: false
-            }]
-        },
+    $("#results").css("visibility", "visible");
+    // Portfilio Performance
+    var portfolioValCtx = document.getElementById("portfolioValueCanvas").getContext("2d");
+    var portfolioValChart = new Chart(portfolioValCtx, {
+      type: 'line',
+      data: {
+        labels: portfolioHistory.labels,
+        datasets: [{
+          label: 'Time',
+          data: portfolioHistory.data,
+          borderColor: [
+              'rgb(39, 169, 198)',
+          ],
+          fill: true
+        }]
+      },
     });
-
-    var ctx2 = document.getElementById("chart2").getContext("2d");
-    ctx.canvas.width = 200;
-    ctx.canvas.height = 200;
-    var myChart2 = new Chart(ctx2, {
+    var portfolioReturnsCtx = document.getElementById("portfolioReturnsCanvas").getContext("2d");
+    var portfolioValChart = new Chart(portfolioReturnsCtx, {
+      type: 'line',
+      data: {
+        labels: portfolioHistory.labels,
+        datasets: [
+          {
+            label: 'Portfolio Return',
+            data: portfolioHistory.accountReturn,
+            borderColor:'rgb(39, 169, 198)',
+            backgroundColor:'rgb(39, 169, 198, 0.1)',
+            fill: true
+          },
+          {
+            label: 'S&P500 ETF Return',
+            data: portfolioHistory.indexReturn,
+            borderColor: 'rgb(43, 188, 145)',
+            backgroundColor: 'rgb(43, 188, 145, 0.1)',
+            fill: true
+          }
+        ]
+      },
+    });
+    // Stock performance
+    $('#stockTabs').html("");
+    $("#stockTabContent").html("");
+    stockPrices.forEach(function(item, idx) {
+      let contentClass = idx == 0 ? 'tab-pane fade in active' : 'tab-pane fade';
+      $('#stockTabs').append("<li><a data-toggle='tab' href='#" + item.ticker + "'>" + item.ticker + "</a></li>");
+      $('#stockTabContent').append("<div id='" + item.ticker + "' class='" + contentClass + "'><canvas id='" + item.ticker + "ID'></canvas></div>")
+      let chart = new Chart(document.getElementById(item.ticker + "ID").getContext("2d"), {
         type: 'line',
         data: {
-            labels: portfolioHistory.labels,
-            datasets: [
+          labels: item.labels,
+          datasets: [
             {
-                label: 'Account Return',
-                data: portfolioHistory.accountReturn,
-                borderColor:'rgb(39, 169, 198)',
-                fill: false
+              label: 'TWAP',
+              data: item.data,
+              borderColor:'rgb(39, 169, 198)',
+              fill: false
             },
-            {
-                label: 'Index Return',
-                data: portfolioHistory.indexReturn,
-                borderColor: 'rgb(43, 188, 145))',
-                fill: false
-            }
-            ]
+          ]
         },
-    })
-
-    stockPrices.forEach(function(item) {
-      //$('#myTab').append("<li><a data-toggle='tab' href='#sectionA'>Section A</a></li>")
-      $('#myTab').append("<li><a data-toggle='tab' href='#" + item.ticker + "'>" + item.ticker + "</a></li>")
-      $('#myTabContent').append("<div id='" + item.ticker + "' class='tab-pane fade in active'><canvas id='" + item.ticker + "ID'></canvas></div>")
-     }) //$('#myTabContent').append("<div id='" + item.ticker + "' class='tab-pane fade in active'><canvas id='puku'></canvas></div>")
-      stockPrices.forEach(function(item) {document.getElementById(item.ticker + "ID").getContext("2d").canvas.width = 200;
-      document.getElementById(item.ticker + "ID").getContext("2d").canvas.height = 200;
-        new Chart(document.getElementById(item.ticker + "ID").getContext("2d"), {
-            type: 'line',
-            data: {
-                labels: item.labels,
-                datasets: [
-                {
-                    label: 'TWAP',
-                    data: item.data,
-                    borderColor:'rgb(39, 169, 198)',
-                    fill: false
-                },
-                ]
-            },
-        })
-
-    })
-    
-
-
-
-    
-    var target = $("#chart1")
+      })
+    });
+    // Scroll to the results
+    var target = $("#results")
     $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 1000);
+      scrollTop: target.offset().top
+    }, 1000);
   }
 });

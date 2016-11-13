@@ -55,7 +55,6 @@ router.post("/algorithmSimulation", function (req, res) {
     // The last promise
     promise.then(function(data){
       return parseAndSimplify(data.data).then(function(result){
-        console.log(JSON.stringify(result));
         if (data){
           mainData = mainData.concat(result);
         }
