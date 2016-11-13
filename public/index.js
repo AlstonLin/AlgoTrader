@@ -7,7 +7,6 @@
     onAdd(value, text, $selectedItem) {
       selectedCompanies.push($selectedItem)
       selectedTicket = text
-      console.log(selectedCompanies, selectedTicket)
       //NOTE: Will break if user deleted a selection
     },
     onRemove(value, text, $selectedItem) {
@@ -48,7 +47,7 @@
     $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
     var ticketSelection = selectedTicket.split(",")
     var stocks = []
-    for (var i = 0; i<ticketSelection.length; i++) {
+    for (var i = 0; i < ticketSelection.length; i++) {
       stocks.push({
         company: selectedCompanies[i],
         ticket: ticketSelection[i]
@@ -61,6 +60,7 @@
       endTime: $('#_end').val(),
       code: editor.getValue(" ")
     }
+    console.log(JSON.stringify(simulation_data));
     $.ajax({
       type: "POST",
       url: "/api/algorithmSimulation",
