@@ -277,3 +277,39 @@
     }, 1000);
   }
 });
+$(".start").change(function()
+{
+  var newDay=String(document.getElementById('_start').value);
+  var s=[...""+newDay];
+//  $yesterday.setDate($today.getDate()-1);
+  var $eMM=Number(s[0]*10) + Number(s[1]);
+  var $edd=Number(s[3]*10) + Number(s[4]) + 14;
+  if($edd>30)
+  {
+    $eMM+=1;
+    $edd%=30;
+  }
+  
+  var $eyyyy=Number(s[6]*1000) + Number(s[7]*100) + Number(s[8]*10) + Number(s[9]);
+  console.log($edd, $eMM, $eyyyy);
+  $newDay = $eMM+'/'+$edd+'/'+$eyyyy;
+  document.getElementById("_end").value=$newDay;
+  console.log($newDay);
+});
+
+setInterval(function(){
+  var newDay=String(document.getElementById('_start').value);
+  var s=[...""+newDay];
+  var $eMM=Number(s[0]*10) + Number(s[1]);
+  var $edd=Number(s[3]*10) + Number(s[4]) + 14;
+  if($edd>30)
+  {
+    $eMM+=1;
+    $edd%=30;
+  }
+  
+  var $eyyyy=Number(s[6]*1000) + Number(s[7]*100) + Number(s[8]*10) + Number(s[9]);
+  if (isNaN($eyyyy)) return;
+  $newDay = $eMM+'/'+$edd+'/'+$eyyyy;
+  document.getElementById("_end").value=$newDay;
+}, 500);
