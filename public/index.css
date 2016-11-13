@@ -1,58 +1,49 @@
 
-#cash {
-	width: 33.8%;
-	height: 27px !important;
-	margin-bottom: 0px;
+a {
+    color: white;
+    background-color: black;
+    -webkit-transition: color 1000ms linear, background-color 1000ms linear;
+    -moz-transition: color 1000ms linear, background-color 1000ms linear;
+    -o-transition: color 1000ms linear, background-color 1000ms linear;
+    -ms-transition: color 1000ms linear, background-color 1000ms linear;
+    transition: color background-color 1000ms linear, background-color 1000ms linear;
 }
 
-.start {
-	margin-right: 3px;
-	height: 27px !important;
-}
-
-.end {
-	height: 27px !important;
-}
-
-span {
-	height: inherit !important;
-}
-
-
-#companies {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
 
 .container {
-	padding: 0px !important;
-	text-align: left;
-	margin-right: 10px; 
+	width: 50% !important;
 }
-
-.ui.fluid.dropdown {
-	max-width: 50% !important;
-}
-
-#sim-title {
-	text-align: left;
-	font-size: 25px;
-	margin-top: 15px;
-	margin-left: 15px;
-	font-family: "Raleway";
-	color: #5C5858;
-	margin-bottom: 10px;
+.row {
+	height: 8vh;
 }
 
 .my-header {
 	line-height: 0px;
 	height: 8vh;
-	background-color: black;
+	background-color: rgba(0,0,0,0.5);
 	margin: 0px !important;
 	padding: 10px !important;
 	min-width: 100%;
-	font-family: "Raleway";
+	border-bottom: 2px white solid;
+	font-family: "Raleway"
+}
 
+#circle_name {
+	color: white;
+	font-family: "Raleway";
+	font-size: -webkit-xxx-large;
+	text-align: center;
+	margin-top: 130px;
+}
+
+#title-of-app {
+	color: white;
+	font-size: 25px;
+	float: left;
+	text-align: center;
+	padding: 0px;
+	margin-top: 23px;
+	margin-left: 10px;
 }
 
 .headings {
@@ -69,29 +60,43 @@ span {
 	text-decoration: none;
 }
 
-#about-heading {
+
+p {
 	color: white;
-	text-align: center;
-	font-size: 30px;
-	padding-top: 20px;
+	font-size: 50px;
+	padding: 10px;
+	margin: 0px;
+	stroke: 2px solid;
+
 }
 
-#title-of-app {
-	color: white;
-	font-size: 25px;
-	float: left;
-	text-align: center;
-	padding: 0px;
-	margin-top: 10px;
-	margin-left: 10px;
+#circle {
+  width: 400px;
+  height: 400px;
+  -webkit-border-radius: 200px;
+  -moz-border-radius: 200px;
+  margin-left: 530px;
+  border: white 2px solid;
+  margin-top: 150px;
+  background: black;
 }
 
-a {
-    color: white;
-    background-color: black;
-    -webkit-transition: color 1000ms linear, background-color 1000ms linear;
-    -moz-transition: color 1000ms linear, background-color 1000ms linear;
-    -o-transition: color 1000ms linear, background-color 1000ms linear;
-    -ms-transition: color 1000ms linear, background-color 1000ms linear;
-    transition: color background-color 1000ms linear, background-color 1000ms linear;
+#circle:hover {
+	background-color: skyblue;
+	cursor: pointer;
+	-webkit-transition: background-color 2s ease-out;
+  	-moz-transition: background-color 2s ease-out;
+  	-o-transition: background-color 2s ease-out;
+  	transition: background-color 2s ease-out;
 }
+
+body {
+	line-height: 0px;
+	background-image: url("https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/shutterstock_abstract_3.jpg") !important;
+	background-size: cover;
+}
+
+
+
+
+
