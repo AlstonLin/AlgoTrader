@@ -1,0 +1,60 @@
+
+.container {
+	width: 50% !important;
+}
+body {
+	background-image: url("http://www.aeiuk.com/open-system-solutions/wp-content/uploads/Sky-Scrapers.jpg");
+}
+
+.main-body {
+	margin-top: 60px;
+	height: 70vh;
+	background-color: rgba(0,0,0,0.62);
+	border-radius: 40px;
+	color: white;
+	border: 2px solid white;
+	font-family: "Raleway";
+}
+
+.my-header {
+	line-height: 0px;
+	height: 8vh;
+	background-color: rgba(0,0,0,0.5);
+	margin: 0px !important;
+	padding: 10px !important;
+	min-width: 100%;
+	font-family: "Raleway";
+
+}
+
+.headings {
+	color: white;
+	display: inline-block;
+	margin-right: 20px;
+	float: right;
+	margin-top: 15px;
+	background-color: black;
+	outline-color: none;
+	border: none;
+	padding-top: 10px;
+	font-size: 20px;
+	text-decoration: none;
+}
+
+#about-heading {
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	padding-top: 20px;
+}
+
+#title-of-app {
+	color: white;
+	font-size: 25px;
+	float: left;
+	text-align: center;
+	padding: 0px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+

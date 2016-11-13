@@ -14,30 +14,10 @@
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
   <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
-  
-  <!--CDNs for CodeMirror-->
-  <link rel="stylesheet" href="http://esironal.github.io/cmtouch/lib/codemirror.css">
-  <link rel="stylesheet" href="http://esironal.github.io/cmtouch/addon/hint/show-hint.css">
-  <script src="http://esironal.github.io/cmtouch/lib/codemirror.js"></script>
-  <script src="http://esironal.github.io/cmtouch/addon/hint/show-hint.js"></script>
-  <script src="http://esironal.github.io/cmtouch/addon/hint/xml-hint.js"></script>
-  <script src="http://esironal.github.io/cmtouch/addon/hint/html-hint.js"></script>
-  <script src="http://esironal.github.io/cmtouch/mode/xml/xml.js"></script>
-  <script src="http://esironal.github.io/cmtouch/mode/javascript/javascript.js"></script>
-  <script src="http://esironal.github.io/cmtouch/mode/css/css.js"></script>
-  <script src="http://esironal.github.io/cmtouch/mode/htmlmixed/htmlmixed.js"></script>
-  <script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
-  <script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
-  
-  
-  <!--CDN for DateTimePicker-->
-  <link rel="stylesheet" href="http://esironal.github.io/cmtouch/theme/neonsyntax.css">
-  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" media="screen"
-  href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
-  
-  <!--CDN for axios-->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <!--Chartjs-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+
 </head>
 <body>
 
@@ -81,14 +61,12 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-6">
-    <div class="ui fluid multiple search selection dropdown" id="companies">
-      <input type="hidden" name="company">
+    <div class="ui fluid search selection multiple dropdown">
+      <input type="hidden" name="country">
       <i class="dropdown icon"></i>
       <div class="default text">Select Company</div>
       <div class="menu" id="append_here">
       </div>
-    </div>
     </div>
 
     <br>
@@ -107,14 +85,17 @@
     <div id="code"></div>
     </div>
     <div class="col-xs-2">
-    <button class="ui primary button" id="go_button">Go</button>
-      
+    <button class="btn btn-primary" id="go_button">Go</button>
     </div>
     <br>
     <br>
     
   </div>
 </div>
+<br>
+<br>
+
+
       
 <script type="text/javascript"
   src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">

@@ -3,6 +3,10 @@ let Stock = require('./stock.js');
 
 var simulateTrades = function(AlgoTrader, tradingData){
   let periods = tradingData[0].trades.length;
+  if (!AlgoTrader.trainingOnly){
+    var startingCash = AlgoTrader.currentCash;
+    var startingIndexVal = AlgoTrader.indexData[0].trades[0].Last[0];
+  }
   for (let i = 0; i < periods; i++){
     let time = tradingData[0].trades[i].Time[0];
     // Runs through each stock ticker
@@ -20,15 +24,18 @@ var simulateTrades = function(AlgoTrader, tradingData){
     }
     // Statistics
     if (!AlgoTrader.trainingOnly){
+      let totalVal = AlgoTrader.currentCash + AlgoTrader.getPortfolioValue();
       AlgoTrader.portfolioValueHistory.push({
         time: time,
-        value: AlgoTrader.currentCash + AlgoTrader.getPortfolioValue()
+        value: totalVal,
+        accountReturn: (totalVal / startingCash - 1),
+        indexReturn: (AlgoTrader.indexData[0].trades[i].Last[0] / startingIndexVal - 1)
       });
     }
   }
 };
 
-module.exports = function(code, stocks, trainingData, tradingData, startingCash){
+module.exports = function(code, stocks, trainingData, tradingData, indexData, startingCash){
   let trader = new Trader(0); 
   // Creates the stocks
   for (let idx in stocks){
@@ -43,6 +50,7 @@ module.exports = function(code, stocks, trainingData, tradingData, startingCash)
   simulateTrades(AlgoTrader, trainingData);
   AlgoTrader.trainingOnly = false;
   AlgoTrader.currentCash = startingCash;
+  AlgoTrader.indexData = indexData;
   // Runs through the tradingData and simulates it
   simulateTrades(AlgoTrader, tradingData);
   let portfolioValue = AlgoTrader.getPortfolioValue();
