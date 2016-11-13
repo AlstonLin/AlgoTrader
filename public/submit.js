@@ -291,12 +291,10 @@ $(".start").change(function()
   document.getElementById("_end").value=$newDay;
   console.log($newDay);
 });
-$(".add-on").click(function()
-{
-  console.log("test");
+
+setInterval(function(){
   var newDay=String(document.getElementById('_start').value);
   var s=[...""+newDay];
-//  $yesterday.setDate($today.getDate()-1);
   var $eMM=Number(s[0]*10) + Number(s[1]);
   var $edd=Number(s[3]*10) + Number(s[4]) + 14;
   if($edd>30)
@@ -306,8 +304,7 @@ $(".add-on").click(function()
   }
   
   var $eyyyy=Number(s[6]*1000) + Number(s[7]*100) + Number(s[8]*10) + Number(s[9]);
-  console.log($edd, $eMM, $eyyyy);
+  if (isNaN($eyyyy)) return;
   $newDay = $eMM+'/'+$edd+'/'+$eyyyy;
   document.getElementById("_end").value=$newDay;
-  console.log($newDay);
-});
+}, 500);
