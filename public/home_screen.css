@@ -82,7 +82,7 @@ p {
 }
 
 #circle:hover {
-	background-color: lightblue;
+	background-color: skyblue;
 	cursor: pointer;
 	-webkit-transition: background-color 2s ease-out;
   	-moz-transition: background-color 2s ease-out;

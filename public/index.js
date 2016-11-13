@@ -74,7 +74,7 @@
   $("#go_button").click(function(e) {
   //  $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
     $("#go_button").addClass('loading');
-
+    $("#err report").removeClass('report');
     var stocks = []
     for (var i = 0; i < ticketSelection.length; i++) {
       stocks.push({
@@ -101,16 +101,21 @@
       },
       fail: function(){
         $("#go_button").removeClass('loading');
-        $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
+        
+   //     $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
       },
       error: function (request, status, error) {
-        console.log(request.responseJSON.error);
+        var $errorReport=request.responseJSON.error;
+        console.log($errorReport);
+        $(".err").addClass('report');
+        $('.report').html("<h3><strong>Errors: +$errorReport+</h3>" +$errorReport+"</h3>")
+        $("#go_button").removeClass('loading');
       },
       data: JSON.stringify(simulation_data)
     });
    
   })
-
+  
   function prepareGraph(){
     $("#results").append("<div class='container'><h3>Results</h3><div class='row'><div class='col-xs-6'><canvas id='chart1' width='100' height='100'></canvas></div><canvas id='chart2' width='100' height='100'></canvas></div></div>")
 
