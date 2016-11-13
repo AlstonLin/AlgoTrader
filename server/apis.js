@@ -15,6 +15,7 @@ router.get("/stocks", function (req, res) {
 })
 
 router.post("/algorithmSimulation", function (req, res) {
+  console.log("Request:" + JSON.stringify(req.body));
   let mainData = [];
   // Parses ticker symbols
   let symbols = _.map(req.body.stocks, function(stock){
