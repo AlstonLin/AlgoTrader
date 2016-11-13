@@ -8,99 +8,28 @@
   <link rel="stylesheet" type="text/css" href="index.css">
   
   <!--Bootstrap, SemanticUi, JQuery-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
   <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
 
-  <!--Chartjs-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 
+  <!--Chartjs-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
 </head>
 <body>
 
-<div class="my-heading h1 text-center">
-  <h1>Algorithm Trading Simulating</h1>
-  <p class="description">Blurb about algorithm trading</p>
+
+<div class="row">
+<div class="col-xs-6">
+<canvas id="chart1" width="100" height="100"></canvas>
 </div>
-
-
-<div class="container my-container">
-  <div class="row" style="margin-bottom: 30px;">
-    <div class="col-lg-4" style="text-align: center;">
-      <p> Cash </p>
-      <input id="cash" type="text"> 
-    </div>
-
-    <div class="col-lg-4" style="text-align: center;">
-      <p> Start </p>
-      <div class="input-append date datetimepicker">
-        <input class="start" type="text" id="_start" data-format="MM/dd/yyyy">
-            <span class="add-on">
-            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-            </span>
-      </div>  
-    </div>
-
-    <div class="col-lg-4" style="text-align: center;">
-      <p> End </p>
-      <div class="input-append date datetimepicker">
-        <input class="end" type="text" id="_end">
-          <span class="add-on">
-          <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-        </span>
-      </div> 
-    </div> 
-  </div>
+<canvas id="chart2" width="100" height="100"></canvas>
 </div>
-
-
-
-
-<div class="container">
-  <div class="row">
-    <div class="ui fluid search selection multiple dropdown">
-      <input type="hidden" name="country">
-      <i class="dropdown icon"></i>
-      <div class="default text">Select Company</div>
-      <div class="menu" id="append_here">
-      </div>
-    </div>
-
-    <br>
-    <br>
-    <div class="col-xs-3">
-    <div class="ui fluid search selection dropdown">
-      <input type="hidden" name="company">
-      <i class="dropdown icon"></i>
-      <div class="default text">Select Language</div>
-      <div class="menu">
-      <div class="item">Javascript</div>
-      </div>
-    </div>
-    </div>
-    <div class="col-xs-12">
-    <div id="code"></div>
-    </div>
-    <div class="col-xs-2">
-    <button class="btn btn-primary" id="go_button">Go</button>
-    </div>
-    <br>
-    <br>
-    
-  </div>
-</div>
-<br>
-<br>
-
-
-      
-<script type="text/javascript"
-  src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-</script>
   
-<script type="text/javascript" src="./index.js"></script>
+  <canvas id="chart1" width="100" height="100"></canvas>
+
+  
+<script type="text/javascript" src="./results.js"></script>
 </body>
 </html>
