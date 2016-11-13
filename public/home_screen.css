@@ -1,5 +1,6 @@
-
-
+.container {
+	width: 50% !important;
+}
 .row {
 	height: 8vh;
 }
@@ -13,7 +14,6 @@
 	min-width: 100%;
 	border-bottom: 2px white solid;
 	font-family: "Raleway"
-
 }
 
 #circle_name {
@@ -22,7 +22,6 @@
 	font-size: -webkit-xxx-large;
 	text-align: center;
 	margin-top: 130px;
-
 }
 
 #title-of-app {
@@ -31,7 +30,7 @@
 	float: left;
 	text-align: center;
 	padding: 0px;
-	margin-top: 10px;
+	margin-top: 23px;
 	margin-left: 10px;
 }
 
@@ -50,8 +49,6 @@
 	text-decoration: none;
 }
 
-
-}
 
 p {
 	color: white;
@@ -79,6 +76,7 @@ body {
 	background-image: url("https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/shutterstock_abstract_3.jpg") !important;
 	background-size: cover;
 }
+
 
 
 
