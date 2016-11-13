@@ -1,4 +1,10 @@
  $( document ).ready(function() {
+
+  var portfolioHistory = {
+    labels: [],
+    data: []
+  }
+
   var selectedCompanies = []
   var selectedTicket = ""
   var companies = []
@@ -63,27 +69,44 @@
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         success: function(data){
+          //sessionStorage.setItem('algoTrainerResults', JSON.stringify(data))
           console.log(data)
+
+          data.portfolioHistory.forEach(function (item) {
+              portfolioHistory.labels.push(item.time)
+              portfolioHistory.data.push(item.value)
+          })
+          prepareGraph()
+          //window.location.href = "/results.html"
         },
         data: JSON.stringify(simulation_data)
       });
       console.log(JSON.stringify(simulation_data))
   })
 
-  // {
-  //   "stocks": [
-  //     {
-  //       "company": "Google",
-  //       "ticket": "GOOG"
-  //     },
-  //     {
-  //       "company": "Yahoo",
-  //       "ticket": "YHOO"
-  //     }
-  //     ],
-  //   "startTime": "09/09/2014",
-  //   "endTime": "09/30/2014",
-  //   "startingMoney": 500,
-  //   "code": "AlgoTrader.stockUpdate = function(stock){return 'ALSTON'};"
-  // }  
+  function prepareGraph(){
+    $("#results").append("<div class='container'><h3>Results</h3><div class='row'><div class='col-xs-6'><canvas id='chart1' width='100' height='100'></canvas></div><canvas id='chart2' width='100' height='100'></canvas></div></div>")
+
+    var ctx = document.getElementById("chart1").getContext("2d");
+    ctx.canvas.width = 200;
+    ctx.canvas.height = 200;
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: portfolioHistory.labels,
+            datasets: [{
+                label: 'Time',
+                data: portfolioHistory.data,
+                borderColor: [
+                    'rgb(39, 169, 198)',
+                ],
+                fill: false
+            }]
+        },
+    });
+    var target = $("#chart1")
+    $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 1000);
+  }
 });
