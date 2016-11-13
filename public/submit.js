@@ -7,6 +7,9 @@
     indexReturn: []
   }
 
+  var totalVal = 0;
+  var returnVal = 0;
+
   var stockData = [];
   var selectedCompanies = [];
   var ticketSelection = [];
@@ -106,6 +109,11 @@
         if (xhr.status == 500){
           console.log("ERROR: " + JSON.stringify(data));
         } else {
+
+          returnVal = ((data.percentOfOriginal - 1) * 100).toString().slice(0, 5);
+          totalVal = data.portfolioValue + data.cash;
+
+
           data.portfolioHistory.forEach(function(item) {
             portfolioHistory.labels.push(item.time.slice(0, -7))
             portfolioHistory.data.push(item.value)
@@ -180,6 +188,9 @@
 
   function prepareGraph(){
     $("#results").css("visibility", "visible");
+
+    
+    $("#resultDetails").text("Return value: " + returnVal + "% \nTotal Money Value: $" + totalVal);
     // Portfilio Performance
     $("#portfolioValueCanvas").replaceWith("<canvas id='portfolioValueCanvas'></canvas>");
     $("#portfolioReturnsCanvas").replaceWith("<canvas id='portfolioReturnsCanvas'></canvas>");
