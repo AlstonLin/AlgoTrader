@@ -68,7 +68,6 @@
     },
    startDate: '01/01/2008',
    endDate: $yesterday
-    if()
   });
   
   $("#go_button").click(function(e) {
