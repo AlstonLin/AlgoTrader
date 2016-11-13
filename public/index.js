@@ -97,17 +97,14 @@
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       success: function(data, text, xhr){
-        if (xhr.status == 500){
-          console.log("ERROR: " + JSON.stringify(data));
-        } else {
-          console.log(data)
-        }
-        $("#go_button").removeClass('loading');
-         //$("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
+        console.log(data)
       },
-      fail: function()
-      {
+      fail: function(){
         $("#go_button").removeClass('loading');
+        $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
+      },
+      error: function (request, status, error) {
+        console.log(request.responseJSON.error);
       },
       data: JSON.stringify(simulation_data)
     });
