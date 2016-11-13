@@ -42,7 +42,7 @@
     mode: "javascript",
     lineWrapping: true,
     lineNumbers: true,
-    value: "AlgoTrader.stockUpdate = function(stock){\n  stock.sell(1);\n  stock.buy(1));\n };",
+    value: "AlgoTrader.stockUpdate = function(stock){\n  stock.sell(1);\n  stock.buy(1);\n };",
     styleActiveLine: true,
     matchBrackets: true,
     extraKeys: {

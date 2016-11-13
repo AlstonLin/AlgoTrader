@@ -55,6 +55,7 @@ router.post("/algorithmSimulation", function (req, res) {
     // The last promise
     promise.then(function(data){
       return parseAndSimplify(data.data).then(function(result){
+        console.log(JSON.stringify(result));
         if (data){
           mainData = mainData.concat(result);
         }
@@ -96,7 +97,6 @@ router.post("/algorithmSimulation", function (req, res) {
   getMainData()(function() {
     try {
       let indexData = [];
-      console.log(JSON.strigify(mainData));
       mainData = _.filter(mainData, function(item){
         if (item.ticker == "SPY"){
           indexData.push(item);
