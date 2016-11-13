@@ -38,9 +38,20 @@
       "Ctrl-Space": "autocomplete"
     }
   });
+  $today= new Date();
+  $yesterday= new Date($today);
+  $yesterday.setDate($today.getDate()-1);
+  var $dd=$yesterday.getDate();
+  var $MM=$yesterday.getMonth()+1;
+  var $yyyy=$yesterday.getFullYear();
+  if($dd<10){$dd='0'+dd} if($MM<10){$mm='0'+$mm} $yesterday = $MM+'/'+$dd+'/'+$yyyy;
   $('.datetimepicker').datetimepicker({
-    format: 'MM/dd/yyyy',
-    language: 'en-US'
+    locale:{
+      format: 'MM/dd/yyyy',
+      language: 'en-US'
+    },
+   startDate: '01/01/2008',
+   endDate: $yesterday
   });
   
   $("#go_button").click(function(e) {
