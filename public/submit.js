@@ -43,6 +43,8 @@
 
   $("#myTab li:eq(1) a").tab('show');
 
+
+
   var editor = CodeMirror(document.getElementById("code"), {
     mode: "javascript",
     lineWrapping: true,
@@ -69,6 +71,9 @@
    startDate: '01/01/2008',
    endDate: $yesterday
   });
+
+
+  $("#docs").css({'height':($("#editor").height()+'px')});
   
   $("#go_button").click(function(e) {
     if ($("#go_button").hasClass('loading')) return;

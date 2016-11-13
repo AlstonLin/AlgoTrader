@@ -51,11 +51,11 @@
   <div class = "container my-header"> 
       <p id="title-of-app"> AlgoTrainer </p>
       <a href="about.html" class="headings examples"> About </a>
-      <a href="home_screen.html" class="headings main"> Main </a>
+      <a href="index.html" class="headings main"> Main </a>
   </div>
 
-  <div id= "sim-title"> Simulator Interface </div> 
-    <div class="col-sm-5"> 
+  <div class="container">
+    <div class="col-sm-5" style="overflow-y: scroll" id="docs"> 
       <h3> AlgoTrainer </h3>
       <p> This is the object representing the state of the trading portfolio. </p>
       <p> It has the following attributes: </p>
@@ -83,7 +83,7 @@
       <li> sell(quantity): Sells the quantity specified of this stock (if you have enough stocks) </li>
     </div>
 
-    <div class="col-sm-7">
+    <div class="col-sm-6" id="editor">
       <h3> Code Editor </h3>
       <p> Cash:&ensp;             
       <input id="cash" type="text"> 
@@ -117,7 +117,8 @@
       </div>
       <div id="code"> </div>
 
-      <button class="ui primary button" id="go_button" style="margin-top: 15px;">Go</button>
+      <button class="ui primary button" id="go_button" style="margin-top: 30px; border-radius: 0px; width: 100%">Go</button>
+    </div>
     </div>
 
     <div class="container" id="results" style="visibility: hidden;">
