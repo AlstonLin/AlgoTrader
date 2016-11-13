@@ -1,4 +1,12 @@
+
+#cash {
+	width: 33.8%;
+	height: 27px !important;
+	margin-bottom: 0px;
+}
+
 .start {
+	margin-right: 3px;
 	height: 27px !important;
 }
 
@@ -10,46 +18,80 @@ span {
 	height: inherit !important;
 }
 
-.description {
-	margin-top: 25px;
+
+#companies {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.container {
+	padding: 0px !important;
+	text-align: left;
+	margin-right: 10px; 
+}
+
+.ui.fluid.dropdown {
+	max-width: 50% !important;
+}
+
+#sim-title {
+	text-align: left;
 	font-size: 25px;
-	font-weight: normal;
+	margin-top: 15px;
+	margin-left: 15px;
+	font-family: "Raleway";
+	color: #5C5858;
+	margin-bottom: 10px;
 }
 
-
-.my-heading {
-	padding-top: 20px;
-	padding-bottom: 20px;
-	color: black;
-	background-color: #eee;
-	border-bottom: black 2px solid;
-}
-
-
-.text_edit{
-    width: 900px;
-    height: 400px;
-    resize: none;
-    border-color: lightgrey;
-}
-
-body{
-  background-color: darkgrey;
+.my-header {
+	line-height: 0px;
+	height: 8vh;
+	background-color: black;
+	margin: 0px !important;
+	padding: 10px !important;
+	min-width: 100%;
+	font-family: "Raleway";
 
 }
 
-
-.cash {
-	width: 60%;
-	height: 27px !important;
-}
-
-
-
-p {
+.headings {
+	color: white;
+	display: inline-block;
+	margin-right: 20px;
+	float: right;
+	margin-top: 15px;
+	background-color: black;
+	outline-color: none;
+	border: none;
+	padding-top: 10px;
 	font-size: 20px;
+	text-decoration: none;
 }
 
-.h1 {
-	margin-top: 0px !important;
+#about-heading {
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	padding-top: 20px;
+}
+
+#title-of-app {
+	color: white;
+	font-size: 25px;
+	float: left;
+	text-align: center;
+	padding: 0px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+a {
+    color: white;
+    background-color: black;
+    -webkit-transition: color 1000ms linear, background-color 1000ms linear;
+    -moz-transition: color 1000ms linear, background-color 1000ms linear;
+    -o-transition: color 1000ms linear, background-color 1000ms linear;
+    -ms-transition: color 1000ms linear, background-color 1000ms linear;
+    transition: color background-color 1000ms linear, background-color 1000ms linear;
 }

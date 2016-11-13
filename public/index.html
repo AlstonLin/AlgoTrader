@@ -6,11 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--CSS File-->
   <link rel="stylesheet" type="text/css" href="index.css">
-  
   <!--Bootstrap, SemanticUi, JQuery, Lodash -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond|Montserrat|Raleway" rel="stylesheet">
+
+  <!--Bootstrap, JQuery-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!--SemanticUi-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
   <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.js"></script>
@@ -41,87 +46,83 @@
 
     <!--Chartjs-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-</head>
-<body>
 
-<div class="my-heading h1 text-center">
-  <h1>Algorithm Trading Simulating</h1>
-  <p class="description">Blurb about algorithm trading</p>
-</div>
+  <body>
+  <div class = "container my-header"> 
+      <p id="title-of-app"> AlgoTrainer </p>
+      <a href="about.html" class="headings examples"> About </a>
+      <a href="home_screen.html" class="headings main"> Main </a>
+  </div>
 
-
-<div class="container my-container">
-  <div class="row" style="margin-bottom: 30px;">
-    <div class="col-lg-4" style="text-align: left;">
-      <p> Cash </p>
-      <input id="cash" type="text"> 
+  <div id= "sim-title"> Simulator Interface </div> 
+    <div class="col-sm-5"> 
+      <h3> AlgoTrainer </h3>
+      <p> This is the object representing the state of the trading portfolio. </p>
+      <p> It has the following attributes: </p>
+      <li> currentCash: The cash on hand </li>
+      <li> stocksMap: A map of all the stocks (Ticker symbol as key and Stock object as value) </li>
+      <li> time: The current time + date </li>
+      <li> trainingOnly: If the algorithm is not able to trade yet, and only currently training </li>  
+      <h3> Stock </h3> 
+      <p> This is an Object representing any Stock </p>
+      <p> Attributes: </p>
+      <li> quantityOwned: The amount of stock the portfolio owns </li>
+      <li> ticker: The Ticker Symbol </li>
+      <li> name: The name of the Company </li>
+      <li> industry: The industry of that this stock belongs to </li>
+      <li> price: The price of the stock </li>
+      <li> dailyHigh: The daily high price of the stock </li>
+      <li> dailyLow: The daily low price of the stock </li>
+      <li> volume: The volume of stock traded the past hour </li>
+      <li> VWAP: Volume Weighted Average Price </li>
+      <li> TWAP: Time Weighted Average Price </li>
+      <li> trades: The number of trades in the past hour </li>
+      <br>
+      <p> Methods: </p>
+      <li> buy(quantity): Buys the quantity specified of this stock (is you have sufficient cash) </li>
+      <li> sell(quantity): Sells the quantity specified of this stock (if you have enough stocks) </li>
     </div>
 
-    <div class="col-lg-4" style="text-align: center;">
-      <p> Start </p>
-      <div class="input-append date datetimepicker">
-        <input class="start" type="text" id="_start" data-format="MM/dd/yyyy">
+    <div class="col-sm-7">
+      <h3> Code Editor </h3>
+      <p> Cash:&ensp;             
+      <input id="cash" type="text"> 
+      </p>
+      <p> Start: &ensp;
+        <span class="input-append date datetimepicker"> 
+          <input class="start" type="text" id="_start" data-format="MM/dd/yyyy">
             <span class="add-on">
             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
             </span>
-      </div>  
-    </div>
-
-    <div class="col-lg-4" style="text-align: left;">
-      <p> End (2 week Interval!)</p>
-      <div class="input-append date datetimepicker">
-        <input class="end" type="text" id="_end">
-          <span class="add-on">
-          <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
         </span>
-      </div> 
-    </div> 
-  </div>
-</div>
 
+      </p>     
+      <p> End: &ensp;&nbsp; 
+        <span class="input-append date datetimepicker">
+          <input class="start" type="text" id="_end" data-format="MM/dd/yyyy">
+            <span class="add-on">
+            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+            </span>
+        </span>  
+      </p> 
 
-
-
-<div class="container">
-  <div class="row">
-    <div class="col-xs-6">
-    <div class="ui fluid multiple search selection dropdown" id="companies">
-      <input type="hidden" name="company">
-      <i class="dropdown icon"></i>
-      <div class="default text">Select Company</div>
-      <div class="menu" id="append_here">
+      <div class="ui fluid multiple search selection dropdown" id="companies">
+        <input type="hidden" name="company">
+        <i class="dropdown icon"></i>
+        <div class="default text">Select Company</div>
+        <div class="menu" id="append_here"> </div>
       </div>
-    </div>
-    </div>
 
-    <br>
-    <br>
-    <div class="col-xs-3">
-    <div class="ui fluid search selection dropdown" id="languages">
-      <input type="hidden" name="company">
-      <i class="dropdown icon"></i>
-      <div class="default text">Select Language</div>
-      <div class="menu">
-      <div class="item">Javascript</div>
+      <div class="err"> 
       </div>
-    </div>
-    </div>
-    <div class="col-xs-12">
-    <div id="code"></div>
-    </div>
-    <div class="col-xs-2">
-    <button class="ui primary button" id="go_button">Go</button>
-      
-    </div>
-    <br>
-    <br>
-    
-  </div>
-</div>
+      <div id="code"> </div>
 
-<div class="container" id="results" style="visibility: hidden;">
-  <h3>Results</h3>
-  <div class='row'>
+      <button class="ui primary button" id="go_button" style="margin-top: 15px;">Go</button>
+    </div>
+
+    <div class="container" id="results" style="visibility: hidden;">
+    <h3>Results</h3>
+    <div class='row'>
     <ul class='nav nav-tabs' id='portfolioTabs'>
       <li class="active">
         <a data-toggle='tab' href='#portfolioValue'>Portfolio Value</a>
@@ -138,17 +139,20 @@
         <canvas id="portfolioReturnsCanvas"></canvas>
       </div>
     </div>
-  </div>
-  <div class='row'>
-    <ul class='nav nav-tabs' id='stockTabs'></ul>
+    </div>
+    <div class='row'>
+      <ul class='nav nav-tabs' id='stockTabs'></ul>
     <div class='tab-content' id='stockTabContent'></div>
+    </div>
   </div>
-</div>
       
-<script type="text/javascript"
-  src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-</script>
+  <script type="text/javascript"
+    src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+  </script>
   
-<script type="text/javascript" src="./index.js"></script>
-</body>
+  <script type="text/javascript" src="./index.js"></script>
+  </body>
+  </html>
+  </body>
+
 </html>
