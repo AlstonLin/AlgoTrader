@@ -25,12 +25,18 @@ var simulateTrades = function(AlgoTrader, tradingData){
     // Statistics
     if (!AlgoTrader.trainingOnly){
       let totalVal = AlgoTrader.currentCash + AlgoTrader.getPortfolioValue();
+      let holdings = {};
+      for (let key in AlgoTrader.stockMap){
+        let val = AlgoTrader.stockMap[key];
+        holdings[key] = val.quantityOwned;
+      }
       AlgoTrader.portfolioValueHistory.push({
         time: time,
         value: totalVal,
         accountReturn: (totalVal / startingCash - 1) * 100,
-        indexReturn: (AlgoTrader.indexData[0].trades[i].Last[0] / startingIndexVal - 1) * 100
-      });
+        indexReturn: (AlgoTrader.indexData[0].trades[i].Last[0] / startingIndexVal - 1) * 100,
+        holdings: holdings 
+      }) 
     }
   }
 };

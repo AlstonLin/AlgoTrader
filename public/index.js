@@ -7,10 +7,12 @@
     indexReturn: []
   }
 
-  var stockPrices = []
-  var selectedCompanies = []
-  var ticketSelection = []
-  var companies = []
+  var stockPrices = [];
+  var selectedCompanies = [];
+  var ticketSelection = [];
+  var companies = [];
+  var holdingsData = {};
+
   $('#languages').dropdown();
   $('#companies').dropdown({
     onAdd(text, value, $selectedItem) {
@@ -74,6 +76,7 @@
     $("#err report").removeClass('report');
     var stocks = [];
     stockPrices = [];
+    holdingsData = {};
     for (var i = 0; i < ticketSelection.length; i++) {
       stocks.push({
         company: selectedCompanies[i],
@@ -119,7 +122,15 @@
               labels: stockLabels,
               data: stockData
             })
-          })
+          });
+          for (let key in data.portfolioHistory[0].holdings){
+            holdingsData[key] = []
+          }
+          data.portfolioHistory.forEach(function(item){
+            for (let key in item.holdings){
+              holdingsData[key].push(item.holdings[key]);
+            }
+          });
           prepareGraph();
         }
         $("#go_button").removeClass('loading');
@@ -139,11 +150,19 @@
    
   })
   
+  var randomColors = function(){
+    let x = Math.floor(Math.random() * 256);
+    let y = Math.floor(Math.random() * 256);
+    let z = Math.floor(Math.random() * 256);
+    let prefix = "rgb(" + x + ", " + y + ", " + z;
+    return [prefix + ")", prefix + ", 0.1)"]
+  };
+
   function prepareGraph(){
     $("#results").css("visibility", "visible");
     // Portfilio Performance
-    $("#portfolioValueCanvas").html("");
-    $("#portfolioReturnsCanvas").html("");
+    $("#portfolioValueCanvas").replaceWith("<canvas id='portfolioValueCanvas'></canvas>");
+    $("#portfolioReturnsCanvas").replaceWith("<canvas id='portfolioReturnsCanvas'></canvas>");
     var portfolioValCtx = document.getElementById("portfolioValueCanvas").getContext("2d");
     var portfolioValChart = new Chart(portfolioValCtx, {
       type: 'line',
@@ -158,7 +177,7 @@
       },
     });
     var portfolioReturnsCtx = document.getElementById("portfolioReturnsCanvas").getContext("2d");
-    var portfolioValChart = new Chart(portfolioReturnsCtx, {
+    new Chart(portfolioReturnsCtx, {
       type: 'line',
       data: {
         labels: portfolioHistory.labels,
@@ -187,7 +206,8 @@
       let contentClass = idx == 0 ? 'tab-pane fade in active' : 'tab-pane fade';
       let liClass = idx == 0 ? "active" : "";
       $('#stockTabs').append("<li class='" + liClass + "'><a data-toggle='tab' href='#" + item.ticker + "'>" + item.ticker + "</a></li>");
-      $('#stockTabContent').append("<div id='" + item.ticker + "' class='" + contentClass + "'><canvas id='" + item.ticker + "ID'></canvas></div>")
+      $('#stockTabContent').append("<div id='" + item.ticker + "' class='" + contentClass + "'><canvas id='" + item.ticker + "ID'></canvas><<canvas id='" + item.ticker + "-holdings'></canvas>/div>")
+      let colors = randomColors();
       let chart = new Chart(document.getElementById(item.ticker + "ID").getContext("2d"), {
         type: 'line',
         data: {
@@ -196,12 +216,27 @@
             {
               label: 'TWAP',
               data: item.data,
-              borderColor:'rgb(39, 169, 198)',
+              borderColor: colors[0],
               fill: false
             },
           ]
         },
-      })
+      });
+      let holdingsChart = new Chart(document.getElementById(item.ticker + "-holdings").getContext("2d"), {
+        type: 'line',
+        data: {
+          labels: item.labels,
+          datasets: [
+            {
+              label: 'Shares Held',
+              data: holdingsData[item.ticker],
+              borderColor: colors[0],
+              backgroundColor: colors[0],
+              fill: true
+            },
+          ]
+        },
+      });
     });
     // Scroll to the results
     var target = $("#results")
