@@ -35,7 +35,7 @@ var simulateTrades = function(AlgoTrader, tradingData){
   }
 };
 
-module.exports = function(code, stocks, trainingData, tradingData, indexData, startingCash){
+module.exports = function(code, stocks, tradingData, indexData, startingCash){
   let trader = new Trader(0); 
   // Creates the stocks
   for (let idx in stocks){
@@ -46,8 +46,6 @@ module.exports = function(code, stocks, trainingData, tradingData, indexData, st
   // This expects the code to set the variable stockUpdate (i.e. AlgoTrader.stockUpdate = function(stock){ ) ...
   let AlgoTrader = trader;
   eval("(function(){" + code + "}())");
-  // Training Code
-  simulateTrades(AlgoTrader, trainingData);
   AlgoTrader.trainingOnly = false;
   AlgoTrader.currentCash = startingCash;
   AlgoTrader.indexData = indexData;
