@@ -1,16 +1,27 @@
  $( document ).ready(function() {
   var selectedCompanies = []
-  var selectedTicket = ""
+  var ticketSelection = []
   var companies = []
   $('.ui.dropdown').dropdown();
   $('#companies').dropdown({
-    onAdd(value, text, $selectedItem) {
+    /*
+    onChange(text, value, $selectedItem)
+    {
       selectedCompanies.push($selectedItem)
-      selectedTicket = text
+      selectedTicket =text
+      console.log(text, value, $selectedItem)
+    }*/
+    
+    onAdd(text, value, $selectedItem) {
+      selectedCompanies.push(value)
+      ticketSelection.push(text);
+      console.log(text, value)
       //NOTE: Will break if user deleted a selection
     },
-    onRemove(value, text, $selectedItem) {
+    onRemove(text, value, $selectedItem) {
       selectedCompanies.splice($.inArray(value, selectedCompanies), 1);
+      ticketSelection.splice($.inArray(text, selectedCompanies), 1);
+      console.log(text, value, $selectedItem)
       }
   }); 
 
@@ -56,7 +67,7 @@
   
   $("#go_button").click(function(e) {
     $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
-    var ticketSelection = selectedTicket.split(",")
+
     var stocks = []
     for (var i = 0; i < ticketSelection.length; i++) {
       stocks.push({
@@ -83,9 +94,10 @@
         } else {
           console.log(data)
         }
+         $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
       },
       data: JSON.stringify(simulation_data)
     });
-    $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
+   
   })
 });

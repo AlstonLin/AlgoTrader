@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.15.2",
     "body-parser": "^1.15.2",
+    "deferred": "^0.7.5",
     "express": "^4.14.0",
     "xml2js": "^0.4.17"
   },
