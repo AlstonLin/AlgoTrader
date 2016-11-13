@@ -55,7 +55,6 @@ router.post("/algorithmSimulation", function (req, res) {
     // The last promise
     promise.then(function(data){
       return parseAndSimplify(data.data).then(function(result){
-        console.log(JSON.stringify(result));
         if (data){
           mainData = mainData.concat(result);
         }
@@ -108,8 +107,10 @@ router.post("/algorithmSimulation", function (req, res) {
       let val = simulate(req.body.code, req.body.stocks, mainData, indexData, parseFloat(req.body.startingCash));
       res.send(val);
     } catch(err){
-      console.log(err);
-      res.status(500).send(err);
+      console.log(err.message);
+      res.status(500).json({
+        error: err.message
+      });
     }
   });
 });
