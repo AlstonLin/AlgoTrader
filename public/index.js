@@ -2,8 +2,12 @@
 
   var portfolioHistory = {
     labels: [],
-    data: []
+    data: [],
+    accountReturn: [],
+    indexReturn: []
   }
+
+  var stockPrices = []
 
   var selectedCompanies = []
   var ticketSelection = []
@@ -43,6 +47,8 @@
   CodeMirror.commands.autocomplete = function(cm) {
     CodeMirror.showHint(cm, CodeMirror.hint.html);
   }
+
+  $("#myTab li:eq(1) a").tab('show');
 
   var editor = CodeMirror(document.getElementById("code"), {
     mode: "javascript",
@@ -99,7 +105,30 @@
         if (xhr.status == 500){
           console.log("ERROR: " + JSON.stringify(data));
         } else {
+          data.portfolioHistory.forEach(function(item) {
+            portfolioHistory.labels.push(item.time)
+            portfolioHistory.data.push(item.value)
+            portfolioHistory.indexReturn.push(item.indexReturn)
+            portfolioHistory.accountReturn.push(item.accountReturn)
+          });
+
+          var stockLabels = [];
+          var stockData = []
+          data.tradingData.forEach(function(item){
+            stockLabels = []
+            stockData = []
+            item.trades.forEach(function(trade) {
+              stockLabels.push(trade["Time"][0])
+              stockData.push(trade["TWAP"][0])
+            })
+            stockPrices.push({
+              ticker: item.ticker[0],
+              labels: stockLabels,
+              data: stockData
+            })
+          })
           console.log(data)
+          prepareGraph();
         }
          $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
       },
@@ -109,7 +138,7 @@
   })
 
   function prepareGraph(){
-    $("#results").append("<div class='container'><h3>Results</h3><div class='row'><div class='col-xs-6'><canvas id='chart1' width='100' height='100'></canvas></div><canvas id='chart2' width='100' height='100'></canvas></div></div>")
+    $("#results").append("<h3>Results</h3><div class='row'><div class='col-xs-6'><canvas id='chart1'></canvas></div><div class='col-xs-6'><canvas id='chart2'></canvas></div></div><div class='row'><ul class='nav nav-tabs' id='myTab'></ul><div class='tab-content' id='myTabContent'></div></div>")
 
     var ctx = document.getElementById("chart1").getContext("2d");
     ctx.canvas.width = 200;
@@ -128,6 +157,59 @@
             }]
         },
     });
+
+    var ctx2 = document.getElementById("chart2").getContext("2d");
+    ctx.canvas.width = 200;
+    ctx.canvas.height = 200;
+    var myChart2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: portfolioHistory.labels,
+            datasets: [
+            {
+                label: 'Account Return',
+                data: portfolioHistory.accountReturn,
+                borderColor:'rgb(39, 169, 198)',
+                fill: false
+            },
+            {
+                label: 'Index Return',
+                data: portfolioHistory.indexReturn,
+                borderColor: 'rgb(43, 188, 145))',
+                fill: false
+            }
+            ]
+        },
+    })
+
+    stockPrices.forEach(function(item) {
+      //$('#myTab').append("<li><a data-toggle='tab' href='#sectionA'>Section A</a></li>")
+      $('#myTab').append("<li><a data-toggle='tab' href='#" + item.ticker + "'>" + item.ticker + "</a></li>")
+      $('#myTabContent').append("<div id='" + item.ticker + "' class='tab-pane fade in active'><canvas id='" + item.ticker + "ID'></canvas></div>")
+     }) //$('#myTabContent').append("<div id='" + item.ticker + "' class='tab-pane fade in active'><canvas id='puku'></canvas></div>")
+      stockPrices.forEach(function(item) {document.getElementById(item.ticker + "ID").getContext("2d").canvas.width = 200;
+      document.getElementById(item.ticker + "ID").getContext("2d").canvas.height = 200;
+        new Chart(document.getElementById(item.ticker + "ID").getContext("2d"), {
+            type: 'line',
+            data: {
+                labels: item.labels,
+                datasets: [
+                {
+                    label: 'TWAP',
+                    data: item.data,
+                    borderColor:'rgb(39, 169, 198)',
+                    fill: false
+                },
+                ]
+            },
+        })
+
+    })
+    
+
+
+
+    
     var target = $("#chart1")
     $('html,body').animate({
           scrollTop: target.offset().top
