@@ -102,7 +102,7 @@
           console.log("ERROR: " + JSON.stringify(data));
         } else {
           data.portfolioHistory.forEach(function(item) {
-            portfolioHistory.labels.push(item.time)
+            portfolioHistory.labels.push(item.time.slice(0, -7))
             portfolioHistory.data.push(item.value)
             portfolioHistory.indexReturn.push(item.indexReturn)
             portfolioHistory.accountReturn.push(item.accountReturn)
@@ -119,7 +119,7 @@
             high = [];
             low = [];
             item.trades.forEach(function(trade) {
-              stockLabels.push(trade["Time"][0]);
+              stockLabels.push((trade["Time"][0]).slice(0, -7));
               twap.push(trade["TWAP"][0]);
               vwap.push(trade["VWAP"][0]);
               volume.push(trade["Volume"][0]);
