@@ -1,0 +1,52 @@
+
+
+#sim-title {
+	text-align: left;
+	font-size: 25px;
+	margin-top: 20px;
+	margin-left: 15px;
+	font-weight: bold;
+	color: #5C5858;
+}
+
+.my-header {
+	line-height: 0px;
+	height: 8vh;
+	background-color: black;
+	margin: 0px !important;
+	padding: 10px !important;
+	min-width: 100%;
+	font-family: "Raleway";
+
+}
+
+.headings {
+	color: white;
+	display: inline-block;
+	margin-right: 20px;
+	float: right;
+	margin-top: 15px;
+	background-color: black;
+	outline-color: none;
+	border: none;
+	padding-top: 10px;
+	font-size: 20px;
+	text-decoration: none;
+}
+
+#about-heading {
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	padding-top: 20px;
+}
+
+#title-of-app {
+	color: white;
+	font-size: 25px;
+	float: left;
+	text-align: center;
+	padding: 0px;
+	margin-top: 23px;
+	margin-left: 10px;
+}
