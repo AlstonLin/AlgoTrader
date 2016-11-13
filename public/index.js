@@ -7,7 +7,7 @@
     indexReturn: []
   }
 
-  var stockPrices = [];
+  var stockData = [];
   var selectedCompanies = [];
   var ticketSelection = [];
   var companies = [];
@@ -75,7 +75,7 @@
     $("#go_button").addClass('loading');
     $("#err report").removeClass('report');
     var stocks = [];
-    stockPrices = [];
+    stockData = [];
     holdingsData = {};
     for (var i = 0; i < ticketSelection.length; i++) {
       stocks.push({
@@ -109,18 +109,33 @@
           });
 
           var stockLabels = [];
-          var stockData = []
+          var twap = [];
           data.tradingData.forEach(function(item){
-            stockLabels = []
-            stockData = []
+            stockLabels = [];
+            twap = [];
+            vwap = [];
+            volume = [];
+            price = [];
+            high = [];
+            low = [];
             item.trades.forEach(function(trade) {
-              stockLabels.push(trade["Time"][0])
-              stockData.push(trade["TWAP"][0])
+              stockLabels.push(trade["Time"][0]);
+              twap.push(trade["TWAP"][0]);
+              vwap.push(trade["VWAP"][0]);
+              volume.push(trade["Volume"][0]);
+              high.push(trade["Last"][0]);
+              low.push(trade["High"][0]);
+              price.push(trade["Low"][0]);
             })
-            stockPrices.push({
+            stockData.push({
               ticker: item.ticker[0],
               labels: stockLabels,
-              data: stockData
+              twap: twap,
+              vwap: vwap,
+              volume: volume,
+              price: price,
+              high: high,
+              low: low
             })
           });
           for (let key in data.portfolioHistory[0].holdings){
@@ -202,7 +217,7 @@
     // Stock performance
     $('#stockTabs').html("");
     $("#stockTabContent").html("");
-    stockPrices.forEach(function(item, idx) {
+    stockData.forEach(function(item, idx) {
       let contentClass = idx == 0 ? 'tab-pane fade in active' : 'tab-pane fade';
       let liClass = idx == 0 ? "active" : "";
       $('#stockTabs').append("<li class='" + liClass + "'><a data-toggle='tab' href='#" + item.ticker + "'>" + item.ticker + "</a></li>");
@@ -215,10 +230,22 @@
           datasets: [
             {
               label: 'TWAP',
-              data: item.data,
-              borderColor: colors[0],
+              data: item.twap,
+              borderColor: randomColors()[0],
               fill: false
             },
+            {
+              label: 'VWAP',
+              data: item.vwap,
+              borderColor: randomColors()[0],
+              fill: false
+            },
+            {
+              label: 'Price',
+              data: item.price,
+              borderColor: randomColors()[0],
+              fill: false
+            }
           ]
         },
       });
