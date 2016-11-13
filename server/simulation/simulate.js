@@ -28,8 +28,8 @@ var simulateTrades = function(AlgoTrader, tradingData){
       AlgoTrader.portfolioValueHistory.push({
         time: time,
         value: totalVal,
-        accountReturn: (totalVal / startingCash - 1),
-        indexReturn: (AlgoTrader.indexData[0].trades[i].Last[0] / startingIndexVal - 1)
+        accountReturn: (totalVal / startingCash - 1) * 100,
+        indexReturn: (AlgoTrader.indexData[0].trades[i].Last[0] / startingIndexVal - 1) * 100
       });
     }
   }

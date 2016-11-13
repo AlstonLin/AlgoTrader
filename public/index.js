@@ -2,22 +2,17 @@
 
   var portfolioHistory = {
     labels: [],
-    data: []
+    data: [],
+    accountReturn: [],
+    indexReturn: []
   }
 
+  var stockPrices = []
   var selectedCompanies = []
   var ticketSelection = []
   var companies = []
-  $('.ui.dropdown').dropdown();
+  $('#languages').dropdown();
   $('#companies').dropdown({
-    /*
-    onChange(text, value, $selectedItem)
-    {
-      selectedCompanies.push($selectedItem)
-      selectedTicket =text
-      console.log(text, value, $selectedItem)
-    }*/
-    
     onAdd(text, value, $selectedItem) {
       selectedCompanies.push(value)
       ticketSelection.push(text);
@@ -28,7 +23,7 @@
       selectedCompanies.splice($.inArray(value, selectedCompanies), 1);
       ticketSelection.splice($.inArray(text, selectedCompanies), 1);
       console.log(text, value, $selectedItem)
-      }
+    }
   }); 
 
   $.ajax({
@@ -43,6 +38,8 @@
   CodeMirror.commands.autocomplete = function(cm) {
     CodeMirror.showHint(cm, CodeMirror.hint.html);
   }
+
+  $("#myTab li:eq(1) a").tab('show');
 
   var editor = CodeMirror(document.getElementById("code"), {
     mode: "javascript",
@@ -72,10 +69,11 @@
   });
   
   $("#go_button").click(function(e) {
-  //  $("#go_button").replaceWith('<button class="ui primary loading button" id="load_button">Loading</button>');
+    if ($("#go_button").hasClass('loading')) return;
     $("#go_button").addClass('loading');
     $("#err report").removeClass('report');
-    var stocks = []
+    var stocks = [];
+    stockPrices = [];
     for (var i = 0; i < ticketSelection.length; i++) {
       stocks.push({
         company: selectedCompanies[i],
@@ -90,19 +88,44 @@
       endTime: $('#_end').val(),
       code: editor.getValue(" ")
     }
-    console.log(JSON.stringify(simulation_data));
+
     $.ajax({
       type: "POST",
       url: "/api/algorithmSimulation",
       dataType: 'json',
       contentType: "application/json; charset=utf-8",
       success: function(data, text, xhr){
-        console.log(data)
+        if (xhr.status == 500){
+          console.log("ERROR: " + JSON.stringify(data));
+        } else {
+          data.portfolioHistory.forEach(function(item) {
+            portfolioHistory.labels.push(item.time)
+            portfolioHistory.data.push(item.value)
+            portfolioHistory.indexReturn.push(item.indexReturn)
+            portfolioHistory.accountReturn.push(item.accountReturn)
+          });
+
+          var stockLabels = [];
+          var stockData = []
+          data.tradingData.forEach(function(item){
+            stockLabels = []
+            stockData = []
+            item.trades.forEach(function(trade) {
+              stockLabels.push(trade["Time"][0])
+              stockData.push(trade["TWAP"][0])
+            })
+            stockPrices.push({
+              ticker: item.ticker[0],
+              labels: stockLabels,
+              data: stockData
+            })
+          })
+          prepareGraph();
+        }
+        $("#go_button").removeClass('loading');
       },
       fail: function(){
         $("#go_button").removeClass('loading');
-        
-   //     $("#load_button").replaceWith('<button class="ui primary button" id="go_button">Go</button>');
       },
       error: function (request, status, error) {
         var $errorReport=request.responseJSON.error;
@@ -117,28 +140,73 @@
   })
   
   function prepareGraph(){
-    $("#results").append("<div class='container'><h3>Results</h3><div class='row'><div class='col-xs-6'><canvas id='chart1' width='100' height='100'></canvas></div><canvas id='chart2' width='100' height='100'></canvas></div></div>")
-
-    var ctx = document.getElementById("chart1").getContext("2d");
-    ctx.canvas.width = 200;
-    ctx.canvas.height = 200;
-    var myChart = new Chart(ctx, {
+    $("#results").css("visibility", "visible");
+    // Portfilio Performance
+    $("#portfolioValueCanvas").html("");
+    $("#portfolioReturnsCanvas").html("");
+    var portfolioValCtx = document.getElementById("portfolioValueCanvas").getContext("2d");
+    var portfolioValChart = new Chart(portfolioValCtx, {
+      type: 'line',
+      data: {
+        labels: portfolioHistory.labels,
+        datasets: [{
+          label: 'Time',
+          data: portfolioHistory.data,
+          borderColor: 'rgb(39, 169, 198)',
+          fill: true
+        }]
+      },
+    });
+    var portfolioReturnsCtx = document.getElementById("portfolioReturnsCanvas").getContext("2d");
+    var portfolioValChart = new Chart(portfolioReturnsCtx, {
+      type: 'line',
+      data: {
+        labels: portfolioHistory.labels,
+        datasets: [
+          {
+            label: 'Portfolio Return',
+            data: portfolioHistory.accountReturn,
+            borderColor:'rgb(39, 169, 198)',
+            backgroundColor:'rgb(39, 169, 198, 0.1)',
+            fill: true
+          },
+          {
+            label: 'S&P500 ETF Return',
+            data: portfolioHistory.indexReturn,
+            borderColor: 'rgb(43, 188, 145)',
+            backgroundColor: 'rgb(43, 188, 145, 0.1)',
+            fill: true
+          }
+        ]
+      },
+    });
+    // Stock performance
+    $('#stockTabs').html("");
+    $("#stockTabContent").html("");
+    stockPrices.forEach(function(item, idx) {
+      let contentClass = idx == 0 ? 'tab-pane fade in active' : 'tab-pane fade';
+      let liClass = idx == 0 ? "active" : "";
+      $('#stockTabs').append("<li class='" + liClass + "'><a data-toggle='tab' href='#" + item.ticker + "'>" + item.ticker + "</a></li>");
+      $('#stockTabContent').append("<div id='" + item.ticker + "' class='" + contentClass + "'><canvas id='" + item.ticker + "ID'></canvas></div>")
+      let chart = new Chart(document.getElementById(item.ticker + "ID").getContext("2d"), {
         type: 'line',
         data: {
-            labels: portfolioHistory.labels,
-            datasets: [{
-                label: 'Time',
-                data: portfolioHistory.data,
-                borderColor: [
-                    'rgb(39, 169, 198)',
-                ],
-                fill: false
-            }]
+          labels: item.labels,
+          datasets: [
+            {
+              label: 'TWAP',
+              data: item.data,
+              borderColor:'rgb(39, 169, 198)',
+              fill: false
+            },
+          ]
         },
+      })
     });
-    var target = $("#chart1")
+    // Scroll to the results
+    var target = $("#results")
     $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 1000);
+      scrollTop: target.offset().top
+    }, 1000);
   }
 });
