@@ -65,6 +65,7 @@ router.post("/algorithmSimulation", function (req, res) {
   }
 
   function getSymbols(syms){
+    console.log("GET: " + syms);
     return axios.get(TRADES_URL, {
       params: {
         '_Token' : NASDAQ_TOKEN,
@@ -95,6 +96,7 @@ router.post("/algorithmSimulation", function (req, res) {
   getMainData()(function() {
     try {
       let indexData = [];
+      console.log(JSON.strigify(mainData));
       mainData = _.filter(mainData, function(item){
         if (item.ticker == "SPY"){
           indexData.push(item);
