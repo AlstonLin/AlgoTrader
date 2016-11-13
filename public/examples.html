@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AlgoTrading</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--CSS File-->
+  <link rel="stylesheet" type="text/css" href="examples.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond|Montserrat|Raleway" rel="stylesheet">
+
+  
+  <!--Bootstrap, JQuery-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <body>
+  <div class = "container my-header"> 
+      <p id="title-of-app"> AlgoTrainer </p>
+      <a href="about.html" class="headings examples"> About </a>
+      <a href="home_screen.html" class="headings main"> Main </a>
+  </div>
+
+  <div id= "sim-title"> Simulator Interface </div> 
+    <div class="col-sm-6"> 
+      <h3> AlgoTrainer </h3>
+      <p> This is the object representing the state of the trading portfolio. </p>
+      <p> It has the following attributes: </p>
+      <li> currentCash: The cash on hand </li>
+      <li> stocksMap: A map of all the stocks (Ticker symbol as key and Stock object as value) </li>
+      <li> time: The current time + date </li>
+      <li> trainingOnly: If the algorithm is not able to trade yet, and only currently training </li>  
+      <h3> Stock </h3> 
+      <p> This is an Object representing any Stock </p>
+      <p> Attributes: </p>
+      <li> quantityOwned: The amount of stock the portfolio owns </li>
+      <li> ticker: The Ticker Symbol </li>
+      <li> name: The name of the Company </li>
+      <li> industry: The industry of that this stock belongs to </li>
+      <li> price: The price of the stock </li>
+      <li> dailyHigh: The daily high price of the stock </li>
+      <li> dailyLow: The daily low price of the stock </li>
+      <li> volume: The volume of stock traded the past hour </li>
+      <li> VWAP: Volume Weighted Average Price </li>
+      <li> TWAP: Time Weighted Average Price </li>
+      <li> trades: The number of trades in the past hour </li>
+      <br>
+      <p> Methods: </p>
+      <li> buy(quantity): Buys the quantity specified of this stock (is you have sufficient cash) </li>
+      <li> sell(quantity): Sells the quantity specified of this stock (if you have enough stocks) </li>
+    </div>
+
+    <div class="col-sm-6">
+      <h3> Code Editor </h3>
+    </div>
+  </div>
+
+
+
+
+
+  </body>
+
+</html>
