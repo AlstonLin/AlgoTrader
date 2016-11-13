@@ -116,14 +116,42 @@
 
       <button class="ui primary button" id="go_button" style="margin-top: 15px;">Go</button>
 
-      <script type="text/javascript"
-        src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-      </script>
-  
-      <script type="text/javascript" src="./index.js"></script>
-
 
     </div>
+
+    <div class="container" id="results" style="visibility: hidden;">
+    <h3>Results</h3>
+    <div class='row'>
+    <ul class='nav nav-tabs' id='portfolioTabs'>
+      <li class="active">
+        <a data-toggle='tab' href='#portfolioValue'>Portfolio Value</a>
+      </li>
+      <li>
+        <a data-toggle='tab' href='#portfolioReturns'>Return on Investment</a>
+      </li>
+    </ul>
+    <div class='tab-content' id='portfolioTabsContent'>
+      <div id="portfolioValue" class='tab-pane fade in active'>
+        <canvas id="portfolioValueCanvas"></canvas>
+      </div>
+      <div id="portfolioReturns" class='tab-pane fade'>
+        <canvas id="portfolioReturnsCanvas"></canvas>
+      </div>
+    </div>
+    </div>
+    <div class='row'>
+      <ul class='nav nav-tabs' id='stockTabs'></ul>
+    <div class='tab-content' id='stockTabContent'></div>
+    </div>
+  </div>
+      
+  <script type="text/javascript"
+    src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+  </script>
+  
+  <script type="text/javascript" src="./index.js"></script>
+  </body>
+  </html>
 
 
 
