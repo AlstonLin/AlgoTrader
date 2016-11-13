@@ -50,3 +50,13 @@
 	margin-top: 23px;
 	margin-left: 10px;
 }
+
+a {
+    color: white;
+    background-color: black;
+    -webkit-transition: color 1000ms linear, background-color 1000ms linear;
+    -moz-transition: color 1000ms linear, background-color 1000ms linear;
+    -o-transition: color 1000ms linear, background-color 1000ms linear;
+    -ms-transition: color 1000ms linear, background-color 1000ms linear;
+    transition: color background-color 1000ms linear, background-color 1000ms linear;
+}

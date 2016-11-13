@@ -1,3 +1,15 @@
+
+a {
+    color: white;
+    background-color: black;
+    -webkit-transition: color 1000ms linear, background-color 1000ms linear;
+    -moz-transition: color 1000ms linear, background-color 1000ms linear;
+    -o-transition: color 1000ms linear, background-color 1000ms linear;
+    -ms-transition: color 1000ms linear, background-color 1000ms linear;
+    transition: color background-color 1000ms linear, background-color 1000ms linear;
+}
+
+
 .container {
 	width: 50% !important;
 }
@@ -63,11 +75,19 @@ p {
   height: 400px;
   -webkit-border-radius: 200px;
   -moz-border-radius: 200px;
-  background: black;
   margin-left: 530px;
   border: white 2px solid;
   margin-top: 150px;
+  background: black;
+}
 
+#circle:hover {
+	background-color: lightblue;
+	cursor: pointer;
+	-webkit-transition: background-color 2s ease-out;
+  	-moz-transition: background-color 2s ease-out;
+  	-o-transition: background-color 2s ease-out;
+  	transition: background-color 2s ease-out;
 }
 
 body {
@@ -75,8 +95,6 @@ body {
 	background-image: url("https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/shutterstock_abstract_3.jpg") !important;
 	background-size: cover;
 }
-
-
 
 
 
